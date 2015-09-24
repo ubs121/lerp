@@ -1,0 +1,47 @@
+// Copyright 2015, ubs121.
+// All rights reserved.
+
+syntax = "proto3";
+
+package db;
+
+// The data service definition.
+service Db {
+  // count
+  rpc Count (DataRequest) returns (DataResponse) {}
+
+  // find data
+  rpc Find (DataRequest) returns (DataResponse) {}
+  rpc FindOne(DataRequest) returns (DataResponse) {}
+  rpc FindId(DataRequest) returns (DataResponse) {}
+  rpc FindLink(DataRequest) returns (DataResponse) {}
+
+  // edit data
+  rpc Save(DataRequest) returns (DataResponse) {}
+  rpc Insert(DataRequest) returns (DataResponse) {}
+  rpc Update(DataRequest) returns (DataResponse) {}
+  rpc Delete(DataRequest) returns (DataResponse) {}
+
+  // analyze
+  rpc Aggregate(DataRequest) returns (DataResponse) {}
+  rpc ExecJs(DataRequest) returns (DataResponse) {}
+
+}
+
+// The request message
+message DataRequest {
+  string query = 1;
+  string[] sort = 2;
+  map    select = 3;
+  int skip = 4;
+  int limit= 5;
+  map data = 6;
+  string data_id=7;
+}
+
+// The response message
+message DataResponse {
+ string code = 1;
+ string message = 2;
+ map data=3;
+}
