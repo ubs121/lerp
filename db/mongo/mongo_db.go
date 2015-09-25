@@ -1,18 +1,14 @@
 // Copyright 2013 ubs121
-package db
+package mongo
 
 import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/gorilla/mux"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 	"io/ioutil"
-	"lerp/conf"
-	"lerp/rpc"
 	"log"
-	"net/http"
 	"reflect"
 	"regexp"
 	"strings"
@@ -526,27 +522,27 @@ func Close() {
 	mgoSession.Close()
 }
 
-func Register() *mux.Router {
-	UrlPrefix := "/db"
-
-	EnsureIndexes()
-
-	rtr := mux.NewRouter()
-	s := rtr.PathPrefix(UrlPrefix).Subrouter()
-	s.HandleFunc("/cols", CollectionList)
-	s.HandleFunc("/count/{collection}", Count)
-	s.HandleFunc("/find/{collection}", Find)
-	s.HandleFunc("/findId/{collection}/{id:.+}", FindId)
-	s.HandleFunc("/findOne/{collection}", FindOne)
-	s.HandleFunc("/aggregate", Aggregate)
-	s.HandleFunc("/mapreduce", MapReduce)
-	s.HandleFunc("/save/{collection}", Save)
-	s.HandleFunc("/delete/{collection}/{id:.+}", Delete)
-	s.HandleFunc("/insert/{collection}", Insert)
-	s.HandleFunc("/update/{collection}", Update)
-	s.HandleFunc("/exec/{js}", ExecJS1)
-	s.HandleFunc("/report", Report)
-
-	return rtr
-
-}
+// func Register() *mux.Router {
+// 	UrlPrefix := "/db"
+//
+// 	EnsureIndexes()
+//
+// 	rtr := mux.NewRouter()
+// 	s := rtr.PathPrefix(UrlPrefix).Subrouter()
+// 	s.HandleFunc("/cols", CollectionList)
+// 	s.HandleFunc("/count/{collection}", Count)
+// 	s.HandleFunc("/find/{collection}", Find)
+// 	s.HandleFunc("/findId/{collection}/{id:.+}", FindId)
+// 	s.HandleFunc("/findOne/{collection}", FindOne)
+// 	s.HandleFunc("/aggregate", Aggregate)
+// 	s.HandleFunc("/mapreduce", MapReduce)
+// 	s.HandleFunc("/save/{collection}", Save)
+// 	s.HandleFunc("/delete/{collection}/{id:.+}", Delete)
+// 	s.HandleFunc("/insert/{collection}", Insert)
+// 	s.HandleFunc("/update/{collection}", Update)
+// 	s.HandleFunc("/exec/{js}", ExecJS1)
+// 	s.HandleFunc("/report", Report)
+//
+// 	return rtr
+//
+// }

@@ -10,10 +10,7 @@ import (
 	"os"
 	"runtime"
 
-	"memex/conf"
-	"memex/rpc"
-	"memex/user"
-	"memex/db"
+	"lerp/rpc"
 )
 
 func main() {
@@ -71,7 +68,7 @@ func main() {
 			log.Fatal(srv.ListenAndServeTLS("server.crt", "server.key"))
 		}()
 
-		println("Memex is started...")
+		println("Lerp is started...")
 
 		//log.Fatal(http.ListenAndServe(":"+conf.Conf["MainPort"], nil))
 
@@ -84,7 +81,7 @@ func main() {
 
 
 func Usage() {
-	fmt.Println("Memex\n")
+	fmt.Println("Lerp\n")
 	fmt.Println("Хэрэглэх заавар:")
 	fmt.Println("  memex КОМАНД [flags]\n")
 	fmt.Println("Командууд:")

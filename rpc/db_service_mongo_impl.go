@@ -1,22 +1,20 @@
-package db
+package rpc
 
 import (
 	"net/http"
 	"time"
-	pb "memex/db/rpc"
 	"golang.org/x/net/context"
-	"google.golang.org/grpc"
+	"lerp/db/mongo"
 )
 
-// TODO: back-end db сонгох боломжтой байх: bolt | mongodb
 type  DbService struct {}
 
 // Бичлэгийн тоо
-func (db *DbService) Count(ctx context.Context, in *pb.DataRequest) (*pb.DataResponse, error) {
+func (db *DbService) Count(ctx context.Context, in *DataRequest) (*DataResponse, error) {
 	if n, err := _count(in); err == nil {
-		return &pb.DataResponse{Code: 0, Message: "", Data: n}, nil
+		return &DataResponse{Code: 0, Message: "", Data: n}, nil
 	} else {
-		return &pb.DataResponse{Code: err.Code, Message: err.Message}, err
+		return &DataResponse{Code: err.Code, Message: err.Message}, err
 	}
 }
 
@@ -25,7 +23,7 @@ func ReadSchema(w http.ResponseWriter, r *http.Request) {
 }
 
 /// Хайх
-func (db *DbService) Find(ctx context.Context, in *pb.DataRequest) (*pb.DataResponse, error) {
+func (db *DbService) Find(ctx context.Context, in *DataRequest) (*DataResponse, error) {
 	var err error
 	args := &Args{}
 	rpc.ReadJson(r, args)
@@ -133,13 +131,7 @@ func _save(op string, w http.ResponseWriter, r *http.Request) {
 }
 
 // http хүсэлтээр илгээсэн triple файлыг импортлох
-func ImportTriple(w http.ResponseWriter, r *http.Request) {
-	defer r.Body.Close()
 
-	_load_n3(r.Body)
-
-	rpc.WriteJson(r, w, "OK", nil)
-}
 
 // Id-аар устгах
 func Delete(w http.ResponseWriter, r *http.Request) {

@@ -8,8 +8,6 @@ import (
 	"errors"
 	"net/http"
 	//"strings"
-	"memex/db"
-	"memex/rpc"
 	"log"
 	"time"
 )
