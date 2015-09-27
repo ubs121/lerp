@@ -9,7 +9,6 @@ import (
 	"github.com/boltdb/bolt"
 	"strings"
 	"time"
-	"memex/util"
 )
 
 type (
