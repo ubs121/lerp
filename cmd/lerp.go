@@ -3,19 +3,15 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/barakmich/glog"
-	"github.com/bradfitz/http2"
+	"lerp/rpc"
+	"lerp/db"
 	"log"
 	"net/http"
 	"os"
-	"runtime"
-
-	"lerp/rpc"
 )
 
 func main() {
 	var (
-		tripleFile = flag.String("triples", "", "Triple File to load.")
 		configFile = flag.String("config", "", "Path to an explicit configuration file.")
 	)
 	flag.Parse()
@@ -26,51 +22,45 @@ func main() {
 		os.Exit(1)
 	}
 
-	// програмын тохиргоо ачаалах
-	conf.Load("app.json")
+	// TODO: load config
+	log.Println(configFile)
 
-	db.Open()
+	cmd:=os.Args[1]
+
+	// connect to database
+	log.Println("db connect...")
+
+	db.Open("127.0.0.1")
 	defer db.Close()
 
 	switch cmd {
 	case "meta":
 	case "load":
-		cmd := os.Args[1]
-		newargs := make([]string, 0)
-		newargs = append(newargs, os.Args[0])
-		newargs = append(newargs, os.Args[2:]...)
-		os.Args = newargs
-
-		bucket := os.Args[1]
-		for i := 2; i < len(os.Args); i++ {
-			db.Load(bucket, os.Args[i])
-		}
+		// cmd := os.Args[1]
+		// newargs := make([]string, 0)
+		// newargs = append(newargs, os.Args[0])
+		// newargs = append(newargs, os.Args[2:]...)
+		// os.Args = newargs
+		//
+		// bucket := os.Args[1]
+		// for i := 2; i < len(os.Args); i++ {
+		// 	db.Load(bucket, os.Args[i])
+		// }
 	case "repl":
 		// TODO: repl
 	case "http":
-		user.Init()
-
 		// register services
-		userRtr := user.Register()
-		dbRtr := db.Register()
+		mux := http.NewServeMux()
+		mux.HandleFunc("/", Welcome)
+		rpc.RegisterDataService(mux)
 
-		var srv http.Server
-		srv.Addr = ":4430"
+		log.Println("Lerp is started...")
 
-		// handlers
-		http.Handle(user.UrlPrefix+"/", user.Validate(userRtr))
-		http.Handle(db.UrlPrefix+"/", user.Validate(dbRtr))
-		http.Handle("/web", http.StripPrefix("/web", http.FileServer(http.Dir("web"))))
+		//http.Handle("/file", http.StripPrefix("/file", http.FileServer(http.Dir("file"))))
 
-		http2.ConfigureServer(&srv, &http2.Server{})
 
-		go func() {
-			log.Fatal(srv.ListenAndServeTLS("server.crt", "server.key"))
-		}()
+		http.ListenAndServeTLS(":3000", "cert.pem", "key.pem", mux)
 
-		println("Lerp is started...")
-
-		//log.Fatal(http.ListenAndServe(":"+conf.Conf["MainPort"], nil))
 
 	default:
 		fmt.Println("No command", cmd)
@@ -79,15 +69,19 @@ func main() {
 
 }
 
+func Welcome(w http.ResponseWriter, req *http.Request) {
+	w.Header().Set("Content-Type", "text/plain")
+	w.Write([]byte("Hello from Lerp.\n"))
+}
 
 func Usage() {
 	fmt.Println("Lerp\n")
-	fmt.Println("Хэрэглэх заавар:")
-	fmt.Println("  memex КОМАНД [flags]\n")
-	fmt.Println("Командууд:")
+	fmt.Println("Usage:")
+	fmt.Println("  lerp command [flags]\n")
+	fmt.Println("Commands:")
 	fmt.Println("  init\tХоосон бааз үүсгэнэ.")
 	fmt.Println("  load\tФайлыг (*.nt, *.n3) бааз руу оруулна.")
-	fmt.Println("  http\tВэб серверийг эхлүүлнэ.")
+	fmt.Println("  http\tStarts http service.")
 	fmt.Println("  repl\tХарилцах горимд шилжинэ.")
 	fmt.Println("\nФлагууд:")
 	flag.Parse()

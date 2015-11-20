@@ -1,0 +1,17 @@
+/.idea/workspace.xml
+.DS_Store
+.pub
+.tmp
+dist
+packages
+bower_components
+node_modules
+build
+.buildlog
+deploy
+gen
+log
+out
+lerp
+lerp.pid
+*.pem
