@@ -1,0 +1,8 @@
+name: lerp
+version: 1
+table:
+  Report:
+    id: string
+    name: string # тайлангийн нэр
+    type: string # төрөл
+    params: string # параметрүүд ["Month", "Company"]

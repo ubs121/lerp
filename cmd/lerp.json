@@ -1,0 +1,15 @@
+{
+"MainPort": "80",
+"SessionTimeout": "3600",
+
+"DbHost":"127.0.0.1",
+"DbPort":"27017",
+"DbName":"lerp",
+"DbUser":"test",
+"DbPassword":"test",
+
+"Web":"web/",
+"FileHome":"TEMP/files",
+"DataHome":"TEMP/data",
+"ReportHome":"web/report"
+}

@@ -1,0 +1,113 @@
+<meta charset="utf-8">
+<link rel="import" href="../polymer/polymer.html">
+
+<dom-module id="rpt-hr10" attributes="rs">
+<template>
+
+  <header>
+    <h2>Хүний нөөцийн эргэц</h2>
+  </header>
+
+  <section>
+
+    <table class="table" name="Employee Turnover Rate">
+    <thead>
+      <tr>
+        <th>Нэгж</th>
+        <th>Энэ сард</th>
+        <th>Month to Date</th>
+        <th>Month to Date Previous Year</th>
+      </tr>
+    </thead>
+    <tbody template repeat="{{ r in rs }}">
+
+      <tr>
+        <td>{{ r['Dept'] }}</td>
+        <td>{{ r['ThisMonth'] }}</td>
+        <td>{{ r['MonthToDate'] }}</td>
+        <td>{{ r['MonthToPrevYear'] }}</td>
+      </tr>
+    </tbody>
+    </table>
+
+  </section>
+
+  <script type="text/javascript" defer>
+    function rpt_hr10(params) {
+      db.rpt_hr10.drop();
+
+      var today = new Date();
+      var y = today.getFullYear();
+      var m = today.getMonth(); // starts from 0
+
+	  var q = {};
+
+      if (params.Company) {
+        q["Company"] = params.Company;
+      }
+
+      var rs = db.Employee.group({
+        'key': {'Dept': 1},
+        'cond': q,
+        'reduce': function(c,r) {
+          r.Joined[parseInt(c.JoinedDate.substr(5,2)) - 1] += 1;
+          if (c.ResignationReason=='voluntary') {
+          	r.Resigned[parseInt(c.ResignationDate.substr(5,2)) - 1] += 1;
+          }
+        },
+        'initial': {
+          'Joined': [0,0,0,0,0,0,0,0,0,0,0,0],
+          'Resigned': [0,0,0,0,0,0,0,0,0,0,0,0]
+        }
+      });
+
+      if (rs.length > 0) {
+
+      	rs.forEach(function(r) {
+      	  var o = {};
+          o.Dept = r.Dept;
+          var a = 0;
+          if (m > 0) {
+            // average staff for month
+            a = (r.Joined[m-1] + r.Joined[m])/2;
+          } else {
+            a = r.Joined[m];
+          }
+
+          if (a > 0) {
+          	//o.ThisMonth = (r.Resigned[m]/a)*100;
+          	o.ThisMonth = a;
+          } else {
+            o.ThisMonth = 0;
+          }
+
+		  var mj = 0;
+		  var mr = 0;
+		  for (var i=0; i<m; i++) {
+		    mj += r.Joined[i];
+		    mr += r.Resigned[i];
+		  }
+
+		  if (mj > 0) {
+          	o.MonthToDate = mj / (m + 1);
+          	// o.MonthToDate = ( (mr * m) / mj) * 100;
+		  } else {
+		    o.MonthToDate = 0;
+		  }
+          o.MonthToPrevYear = 0;
+
+          db.rpt_hr10.save(o);
+      	});
+      }
+
+      return "OK";
+    }
+  </script>
+
+  <footer>
+  </footer>
+</template>
+<script>
+  Polymer('rpt-hr10', {  rs: []  });
+</script>
+</dom-module>

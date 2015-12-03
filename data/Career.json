@@ -1,0 +1,15 @@
+[
+{
+	"_id": "ubs121",
+	"Education": [
+		{
+			"School": "Сүхбаатар",
+			"Duration": "10 жил",
+			"GraduatedYear": "1996",
+			"GPA": "Онц",
+			"Degree":"Бүрэн дунд"
+		}
+	]
+
+}
+]

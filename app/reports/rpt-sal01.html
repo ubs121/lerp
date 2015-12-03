@@ -1,0 +1,79 @@
+<meta charset="utf-8">
+<link rel="import" href="packages/polymer/polymer.html">
+<dom-module id="rpt-sal01" attributes="rs">
+<template>
+  <link rel="stylesheet" href="packages/bootstrap_for_pub/css/bootstrap.min.css">
+  
+  <header>
+    <h2>Salary Report</h2>
+  </header>
+  
+  <section>
+    
+    <table class="table" name="Salary Report">
+    <thead>
+      <tr>
+        <th>Department</th>
+        <th>Job</th>
+        <th>Name/EN</th>
+        <th>Date of Hire</th>
+        <th>Basic Salary</th>
+        <th>Fixed Allowances</th>
+        <th>Total Salary</th>
+      </tr>
+    </thead>
+    <tbody template repeat="{{ r in rs }}">
+    
+      <tr>
+        <td>{{ r['Department'] }}</td>
+        <td>{{ r['Job'] }}</td>
+        <td>{{ r['Name'] }}</td>
+        <td>{{ r['HireDate'] }}</td>
+        <td>{{ r['BasicSalary'] }}</td>
+        <td>{{ r['FixedAllowances'] }}</td>
+        <td>{{ r['TotalSalary'] }}</td>
+      </tr>
+    </tbody>
+    </table>
+    
+  </section>
+  
+  <script type="text/javascript" defer>
+    function rpt_sal01(params) {
+      db.rpt_sal01.drop();
+      
+      var q = {};
+      
+      if (params.Company) {
+        q["Company"] = params.Company; 
+      }
+      
+      if (params.Dept) {
+        q["Dept"] = params.Dept;
+      }
+      
+      db.Contract.find(q).forEach( function(s) {
+        var o = {};
+        o.Name = s.EmployeeName;
+        o.Department = s.Dept || "";
+        o.Job = s.Job || "";
+        o.HireDate = s.DateStart||"";
+        o.BasicSalary = s.Wage||0;
+        o.FixedAllowances = s.FixedAllowances||0;
+        o.TotalSalary = o.BasicSalary + o.FixedAllowances;  
+        
+        
+        db.rpt_sal01.save(o); 
+      });
+      
+      return "OK";
+    }
+  </script>
+  
+  <footer>
+  </footer>
+</template>
+<script>
+  Polymer('rpt-sal01', {  rs: []  });
+</script>
+</dom-module>

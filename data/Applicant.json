@@ -1,0 +1,50 @@
+[
+{
+	"_id": "ББ11223344",
+	"Name":"Ажил горилогч",
+	"LastName":"",
+	"FamilyName":"",
+	"Gender": "",
+	"Job":"IT мэргэжилтэн",
+	"SalaryProposed":"",
+	"SalaryExpected":"",
+	"Probability":"Good",
+	"Availability":"",
+	"Response":"эцсийн хариу",
+	"Phone":"",
+	"Email":"",
+	"Photo": "",
+	"Reference":"",
+	"tags":"",
+
+	"Stage":"interview1",
+	"State":"open",
+	"Date":"2013-12-10",
+	"DateAction":"",
+	"Company":""
+},
+{
+	"_id": "ББ55443322",
+	"Name":"Ажил горилогч2",
+	"LastName":"",
+	"FamilyName":"",
+	"Gender": "",
+	"Job":"IT мэргэжилтэн",
+	"SalaryProposed":"",
+	"SalaryExpected":"",
+	"Probability":"Good",
+	"Availability":"",
+	"Response":"эцсийн хариу",
+	"Phone":"",
+	"Email":"",
+	"Photo": "",
+	"Reference":"",
+	"tags":"",
+
+	"Stage":"",
+	"State":"hired",
+	"Date":"2013-12-11",
+	"DateAction":"",
+	"Company":""
+}
+]

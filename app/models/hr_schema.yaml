@@ -1,0 +1,269 @@
+name: lerp
+version: 1
+table:
+  Employee:
+    column:
+      id: string
+      name: string
+      lastName: string
+      familyName: string
+      gender: string
+      dept: string # хэлтэс, нэгж
+      job: string # ажлын байр
+      position: string # албан тушаал
+      reportTo: string # дээд удирдлага
+      workAddress: string #ажлын хаяг
+      workLocation: string # ажлын өрөө, байр
+      workEmail: string # ажлын э-мэйл
+      workPhone: string # ажлын утас
+      mobilePhone: string # гар утас
+      cardNo: string # ажлын үнэмлэхийн дугаар
+      coach: string # дасгалжуулагч
+      notes: string # нэмэлт тэмдэглэл
+      type: string #
+      status: string # байгаа, эзгүй, гарсан
+
+      hireDate: datetime # ажилд орсон огноо
+      timeTable: string # ажиллах цагийн хуваарь
+      trialEndDate: datetime # туршилтын дуусах хугацаа
+      resignationDate: datetime # ажлаас гарсан огноо
+      resignationReason: string # ажлаас гарсан шалтган: voluntary resignation; termination; dismissal; end of contract; retirement; retrenchment; deceased
+
+      bankName: string # цалингийн дансны банк
+      bankAccount: string # цалингийн данс
+
+      tags: string # ["Sales", "Trainer", ...],
+
+      evalPlan: string # үнэлгээ хийх төлөвлөгөө
+      evalDate: datetime # дараагийн үнэлгээ хийх огноо
+
+      casual: string # Осолд өртсөн эсэх
+      casualNotes: string # Осолд өртсөн тэмдэглэл
+
+      attachments: string # [хавсралт файлууд]
+    constraint:
+      primaryKey: [ id ]
+
+  Contract:
+    column:
+      id: string # ID
+      name: string # гэрээний дугаар/нэр
+      date: string # гэрээний огноо
+      type: string # гэрээний төрөл
+      emp: string # ажилтан
+      employeeName: string # ажилтны нэр
+      dept: string # хэлтэс нэгж
+      job: string # ажлын байр
+      dateStart: datetime # гэрээний эхлэх огноо
+      dateEnd: datetime # гэрээ дуусах огноо
+      wage: number # үндсэн цалингийн хэмжээ
+      fixedAllowances: number # тогмтол нэмэгдлийн хэмжээ
+      workingHours: integer # ажлын цаг
+      advantages: string # бусад нэмэлт
+      visaNo: string # гадны ажилтан бол визийн дугаар энд бичнэ
+      visaExpire: datetime # визийн дуусах хугацаа
+      reason: string # гэрээний үндэслэл "1 transfer within SBU; 2 Transfer inter-SBU;  3: Promoted  4: Re-designated  5:Salary Changes",
+      notes: string # тэмдэглэл
+
+      salaryProfile: string # цалингийн профайл
+      schedulePay: string # цалин олгох давтамж  ('monthly', 'Monthly'), ('quarterly', 'Quarterly'), ('semi-annually', 'Semi-annually'), ('annually', 'Annually'),('weekly', 'Weekly'), ('bi-weekly', 'Bi-weekly'),('bi-monthly', 'Bi-monthly'),], 'Scheduled Pay', select=True)",
+
+    constraint:
+      primaryKey: [ id ]
+
+  Job:
+    column:
+      id: string
+      name: string # ажлын байрны нэр
+      categ: string # ангилал "Senior management/Management/confidential/rank& file/part-time/temporary/foreign/expatriate/ trainee",
+      expectedEmployees: integer # Шаардлагатай нөөцийн тоо (орон тоо)
+      description: string # тодорхойлолт
+      requirements: string # тавигдах шаардлага
+      dept: string # хэлтэс, нэгж
+      company: string # компани
+      state: string # төлөв ('open', 'No Recruitment'), ('recruit', 'Recruitement in Progress')
+    constraint:
+      foreignKey:
+        fkId:
+          local: dept
+          ref: Dept.id
+          action: cascade
+
+  Dept:
+    column:
+      id: string # нэгжийн товч нэр
+      name: string # бүтэн нэр
+      manager: string # Нэгжийн удирдлага
+      parent: string # дээд нэгж
+      notes: string # тэмдэглэл
+      company: string # Компани
+    constraint:
+      primaryKey: [ id ]
+      unique:
+        uniqFN:
+          column: [ name ]
+
+  Applicant:
+    column:
+      id: string # регистр
+      name: string
+      lastName: string
+      familyName: string
+      gender: string
+      job: string # сонирхож буй ажлын байр
+      salaryExpected: number # хүссэн цалин
+      salaryProposed: number # санал болгосон цалин
+
+      probability: integer # сонгогдох магадлал ('5', 'Not Good'), ('4', 'On Average'), ('3', 'Good'), ('2', 'Very Good'),    				    ('1', 'Excellent')",
+      response: string # эцсийн хариу
+
+      phone: string # гар утас
+      email: string # э-мэйл
+      photo: string # зураг
+      currentJob: string # одоо эрхэлж байгаа ажил
+      availableDate: datetime # ажилд орох боломжтой огноо
+      reference: string # тодруулга
+      source: string # мэдээллийн эх үүсвэр
+      stage: string # сонгон шалгаруулалтын шат "anket|interview1|interview2|",
+      state: string # төлөв ('draft', 'New'), ('cancel', 'Refused'), ('open', 'In Progress'),('pending', 'Pending'),('done', 'Hired')",
+      date: datetime # анкет өгсөн огноо
+      company: string # компани
+      created: datetime # үүсгэсэн огноо
+      updated: datetime # засвар хийсэн огноо
+      tags: string
+
+  Personal:
+    column:
+      id: string # регистр
+      interest: string # сонирхол
+      goal: string # ойрын зорилго
+      behavior: string # зан төрх
+      birthday: datetime # төрсөн огноо
+      birthPlace: string # төрсөн газар
+      nationality: string # иргэний харъяалал
+      marital: string # гэрлэлтийн байдал "Ганц бие|Гэрлэсэн|Салсан|Бэлэвсэн"
+      children: integer # хүүхдийн тоо
+
+      homeAddress: string # гэрийн хаяг
+      homePhone: string # гэрийн утас
+      email: string # э-мэйл хаяг
+
+      bloodType: string # цусны бүлэг
+      height: number # биеийн өндөр (см)
+      weight: number # биеийн жин (kg)
+      notes: string # тэмдэглэл
+
+  Family:
+    column:
+      person: string # регистр
+      name: string
+      relation: string # хамаарал "Эцэг|Эх|Ах|Эгч|Дүү|Өвөө|Эмээ|Нөхөр|Эхнэр|Хүү|Охин|Хамаатан|Бусад",
+      birthYear: integer
+      phone: string
+
+  Education:
+    column:
+      person: string
+      school: string # төгссөн сургууль
+      duration: integer # суралцсан хугацаа
+      graduatedYear: integer # төгссөн жил
+      profession: string # мэргэжил
+      diplomaNo: string # дипломын дугаар
+      thesis: string # дипломын сэдэв
+      degree: string # "Primary|Bachelor|Master|PhD",
+      gpa: number # голч дүн
+      notes: string
+
+  Skill:
+    column:
+      person: string # регистр
+      type: string # "хэл|спорт|урлаг|компютер|бусад"
+      level: string # "excellent|good|average|..."
+      duration: integer # "Хичээллэсэн, дадлагажсан хугацаа (жилээр)",
+      notes: string # тэмдэглэл
+
+  WorkHistory:
+    column:
+      person: string
+      org: string # ажилласан байгууллага
+      joinedDate: datetime # ажилд орсон огноо
+      position: string # албан тушаал
+      manager: string # дээд удирдлага
+      contact: string # холбоо барих
+      leaveDate: datetime # гарсан огноо
+      notes: string # тэмдэглэл
+
+  Rewards:
+    column:
+      person: string
+      name: string # шагналын нэр
+      date: datetime # шагнал авсан огноо
+      orderId: string # тушаалын дугаар
+      type: string # шагнал, урамшууллын төрөл, олон улсын чанартай гэх мэт
+      org: string # олгосон байгууллага
+      notes: string # тэмдэглэл, шагнал авсан шалтгаан
+
+  Attendance:
+    column:
+      emp: string # ажилтан
+      date: datetime # бүртгэсэн огноо
+      action: string # үйлдэл "орсон|гарсан",
+      actionDesc: string # нэмэлт тайлбар
+      manager: string # хянасан ажилтан
+      workcode : integer # 0,
+      enrollNumder: integer # ирцийн бүртгэлийн дугаар
+      remoteAddr: string # бүртгэсэн төхөөрөмж
+
+  Leave:
+    column:
+      name: string # чөлөөний шалтгаан
+      emp: string # ажилтан
+      type: string # төрөл "Цагийн чөлөө|Өвчний чөлөө|Нөхөн амралт|Цалингүй чөлөө|Ээлжийн амралт|Бусад",
+      state: string # төлөв "('ноорог', 'To Submit'), ('хүсэлт', 'To Approve'),('татгалзсан', 'Refused'),('зөвшөөрсөн1', 'Second Approval'),('зөвшөөрсөн', 'Approved')",
+      dateFrom: datetime # чөлөө эхлэх огноо
+      dateTo: datetime # чөлөө дуусах огноо
+      duration: integer # чөлөө үргэлжлэх хугацаа (ажлын цагаар)
+      manager1: string # эхний зөвшөөрөл олгосон хүн
+      manager2: string # дараагийн зөвшөөрөл олгосон хүн
+      dept: string # хэлтэс нэгж
+      notes: string # нэмэлт тайлбар
+
+  Appraisal:
+    column:
+      emp : string # ажилтан
+      dept: string
+      notes: string # хураангуй тэмдэглэл
+      noteAction: string # авах арга хэмжээ: If the evaluation does not meet the expectations, you can propose an action plan
+      rating: integer # үнэлгээ " 5 – Outstanding; B=Exceed Expectations; C=Meet Expectations; D=Slightly Meet Expectations; E=Does Not Meet Expectations",
+      plan: string # үнэлгээний төлөвлөгөө
+      state: string # төлөв "('draft','New'), ('cancel','Cancelled'), ('wait','Plan In Progress'),('progress','Waiting Appreciation'),('done','Done')",
+      dateClose: datetime # дуусах огноо
+      manager: string # үнэлэх хүн
+
+  Performance:
+    column:
+      emp: string # ажилтан
+      date: datetime # үнэлгээ хийсэн огноо
+      rating: string # үнэлгээ
+      evalPlan: string # үнэлгээ хийх төлөвлөгөө
+
+  Training:
+    column:
+      name: string # сургалтын нэр
+      date: datetime # огноо
+      emp: string # ажилтан
+      duration: integer # хугацаа
+      notes: string # тэмдэглэл
+
+  Holiday:  # Board certified paid holidays
+    column:
+      name: string
+      begin: datetime
+      end: datetime
+    constraint:
+      primaryKey: [ name ]
+    index:
+      idx_begin:
+        column: [ begin ]
+    pragma:
+      persistentIndex: true

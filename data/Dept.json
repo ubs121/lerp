@@ -1,0 +1,11 @@
+[
+{ "_id":"CEO", "Name":"CEO office", "Manager":"", "Company":"Holding"},
+{ "_id":"OD&HC", "Name":"Human Capital Division", "Manager":"", "Parent":"CEO", "Company":"Holding"},
+{ "_id":"FD", "Name":"Finance Division", "Manager":"", "Parent":"CEO", "Company":"Holding"},
+{ "_id":"BD&MD", "Name":"Business Development and Marketing Division", "Manager":"", "Parent":"CEO", "Company":"Holding"},
+{ "_id":"PD", "Name":"Production Division", "Manager":"", "Parent":"CEO", "Company":"Holding"},
+
+{ "_id":"Ferro/201", "Name":"Administration department", "Manager":"", "Company":"Ferro"},
+{ "_id":"Ferro/202", "Name":"Finance & sales department", "Manager":"", "Company":"Ferro"},
+{ "_id":"Ferro/203", "Name":"Production department", "Manager":"", "Company":"Ferro"}
+]

@@ -1,0 +1,122 @@
+<meta charset="utf-8">
+<link rel="import" href="../polymer/polymer.html">
+
+<dom-module id="survey-form">
+<template>
+
+  <record-set id="rsCompany" name="Company" auto
+      context="{{data.context}}"
+      project="['_id', 'Name']">
+  </record-set>
+
+<template if="{{ !real }}">
+ <template if="{{ !editing }}">
+   <button on-click="{{ run }}"
+    title="Санал асуулгыг ажиллуулах"
+    class="btn btn-default pull-right">Турших</button>
+  </template>
+
+  <div class="col-md-6">
+    <x-select label="Компани"
+        value="{{data.current['Company']}}"
+        options="{{ $['rsCompany'].rs }}"
+        editing="{{editing}}">
+    </x-select>
+
+    <x-input label="Нэр" value="{{data.current['Name']}}" editing="{{editing}}"></x-input>
+    <x-input label="Төрөл" value="{{data.current['Type']}}" editing="{{editing}}"></x-input>
+    <x-input label="Нээх огноо" value="{{data.current['DateOpen']}}" editing="{{editing}}"></x-input>
+    <x-input label="Хаах огноо" value="{{data.current['DateClose']}}" editing="{{editing}}"></x-input>
+    <x-select label="Төлөв" value="{{data.current['State']}}"
+      options="['open','close','cancel']"
+      editing="{{editing}}"></x-select>
+  </div>
+
+  <div class="col-md-6">
+    <x-input label="Нэг хүн хариулах тоо" value="{{data.current['ResponseUser']}}" editing="{{editing}}"></x-input>
+    <x-input label="Хариултын хязгаар" value="{{data.current['MaxResponseLimit']}}" editing="{{editing}}"></x-input>
+  </div>
+
+  <div style="clear: left">
+  <x-table label="Асуултууд"
+    rs="{{data.current['Questions']}}"
+    columns="{{ questionCols }}"
+    sort="Sequence"
+    editing="{{editing}}"></x-table>
+  </div>
+
+  <x-note label="Тэмдэглэл" value="{{data.current['Notes']}}" editing="{{editing}}"></x-note>
+</template>
+
+<!-- Санал асуулга ажиллаж байна -->
+<template if="{{ running }}">
+  <div id="dlgRunning" class="modal fade in" tabindex="-1" role="dialog"
+      aria-hidden="false" style="display: block;">
+    <div class="modal-dialog" style="width: 80%">
+      <div id="feedbackForm" class="modal-content">
+
+        <div class="modal-header">
+          <button on-click="{{ close }}" type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <h4 class="modal-title">Санал асуулга: <strong>{{data.current['Name']}}</strong></h4>
+        </div>
+        <div class="modal-body">
+          <template repeat="{{ q in data.current['Questions'] }}">
+            <div class="panel panel-default">
+              <div class="panel-heading">{{q['Sequence']}}.{{ q['Question'] }}</div>
+              <div class="panel-body">
+                <!-- m2o: radio buttons -->
+                <template if="{{ q['AnswerType']=='m2o' }}">
+                  <template repeat="{{ a in q['Answers'] | enumerate }}">
+                    <p>
+                      <input id="ans_{{a.index}}_{{q['_id']}}"
+                        type="radio"
+                        qid="{{ q['_id'] }}"
+                        name="{{ q['Question'] }}"
+                        data-msg="{{a.value}}">
+                      <label style="cursor:pointer" for="ans_{{a.index}}_{{q['_id']}}">{{a.value}}</label>
+                    </p>
+                  </template>
+                </template>
+
+                <!-- m2m: check boxes -->
+                <template if="{{ q['AnswerType']=='m2m' }}">
+                  <template repeat="{{ a in q['Answers'] | enumerate }}">
+                    <p>
+                      <input id="ans_{{a.index}}_{{q['_id']}}"
+                        type="checkbox"
+                        qid="{{ q['_id'] }}"
+                        name="{{ q['Question'] }}"
+                        data-msg="{{a.value}}">
+                      <label style="cursor:pointer" for="ans_{{a.index}}_{{q['_id']}}">{{a.value}}</label>
+                    </p>
+                  </template>
+                </template>
+
+                <!-- rating -->
+                <template if="{{ q['AnswerType']=='rating' }}">
+                  <p><x-ratings count="5" qid="{{ q['_id'] }}"></x-ratings></p>
+                </template>
+
+                <!-- fill -->
+                <template if="{{ q['AnswerType']=='fill' }}">
+                  <textarea style="width:100%" qid="{{ q['_id'] }}"></textarea>
+                </template>
+              </div>
+            </div>
+          </template>
+        </div>
+        <div class="modal-footer">
+          <button on-click="{{ finish }}" type="button"
+            class="btn btn-primary" data-dismiss="modal">Дуусгах</button>
+        </div>
+
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div>
+</template>
+
+</template>
+
+
+<script type="application/dart" src="survey.dart"></script>
+</dom-module>

@@ -1,0 +1,13 @@
+[
+{ "_id": "lerp",
+  "Name": "Lerp сургалт",
+  "Type": "training",
+  "DateStart": "2013-12-01",
+  "Duration": "4",
+  "DateEnd": "2013-12-01",
+  "MainSpeaker": "Ууганбаяр.C",
+  "Participants": [{"_id":"bayarmaa", "Name":"Баярмаа"}, {"_id":"eddy","Name":"Eddy"}],
+  "Responsible": {"_id": "bayarmaa", "Name": "Баярмаа"},
+  "Company" : "holding"
+  }
+]

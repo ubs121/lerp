@@ -1,0 +1,113 @@
+<meta charset="utf-8">
+<link rel="import" href="../polymer/polymer.html">
+
+<dom-module id="plus-group" extends="x-kanban">
+<template>
+
+   <shadow select="header"></shadow>
+
+  <template repeat="{{ r in data.rs}}">
+    <div style="width: 250px; height: 250px; float: left;">
+
+      <div style="width: 30px">
+          <img _src="{{ context.fileUrl(r['Image']) }}" class="img-rounded" style="height: 128px">
+      </div>
+
+      <div style="float:left">
+        <h4><a href="#">{{r['Name']}}</a></h4>
+
+        <div>
+            {{r['Description']}}
+        </div>
+
+        <div>
+            <template if="{{ !isFollowing(r) }}">
+            <button on-click="{{follow}}" data-msg="{{r['_id']}}" class="btn btn-default">
+               Дагах
+            </button>
+            </template>
+
+            <template if="{{ isFollowing(r) }}">
+            <button on-click="{{unfollow}}" data-msg="{{r['_id']}}" class="btn btn-default">
+               Болих
+            </button>
+            </template>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <shadow select="footer"></shadow>
+</template>
+
+
+</dom-module>
+
+<dom-module id="group-form">
+<template>
+
+<template if="{{ !editing}}">
+<div style="width: 250px; height: 250px; float: left;">
+
+    <div style="width: 30px">
+        <img _src="{{data.mediaUrl}}/{{data.current['Image']}}" class="img-rounded" style="height: 128px">
+    </div>
+
+    <div style="float:left">
+      <h4><a href="#">{{data.current['Name']}}</a></h4>
+
+      <div>
+          {{data.current['Description']}}
+      </div>
+
+      <div>
+          <template if="{{ !isFollowing }}">
+          <button on-click="{{follow}}" class="btn btn-default">
+             Дагах
+          </button>
+          </template>
+
+          <template if="{{ isFollowing }}">
+          <button on-click="{{unfollow}}" class="btn btn-default">
+             Болих
+          </button>
+          </template>
+      </div>
+    </div>
+</div>
+</template>
+
+<template if="{{ editing }}">
+<form>
+  <div style="width: 20%; float: left;">
+    <x-file value="{{data.current['Image']}}"
+      context="{{data.context}}"
+      type="image"
+      editing="true">
+    </x-file>
+  </div>
+
+
+  <record-set id="rsCompany" name="Company" auto
+      context="{{data.context}}"
+      project="['_id', 'Name']">
+  </record-set>
+
+   <x-select label="Компани"
+        value="{{data.current['Company']}}"
+        options="{{ $['rsCompany'].rs }}"
+        editing="{{editing}}">
+   </x-select>
+
+   <x-input label="Группын нэр" value="{{data.current['Name']}}" editing="true"></x-input>
+
+   <x-check label="Сонирхлын бүлэг" value="{{data.current['Subscription']}}" editing="true"></x-check>
+
+   <x-note label="Тайлбар" value="{{data.current['Description']}}" editing="true"></x-note>
+</form>
+</template>
+
+</template>
+</dom-module>
+
+<script type="application/dart" src="group.dart"></script>

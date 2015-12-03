@@ -1,0 +1,76 @@
+<meta charset="utf-8">
+<link rel="import" href="packages/polymer/polymer.html">
+<dom-module id="rpt-time01" attributes="rs">
+<template>
+  <link rel="stylesheet" href="packages/bootstrap_for_pub/css/bootstrap.min.css">
+  
+  <header>
+    <h2>Timesheet</h2>
+  </header>
+  
+  <section>
+    
+    <table class="table" name="Timesheet">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Job</th>
+        <th>Working days/hours</th>
+        <th>Late minutes</th>
+        <th>Worked days/hours</th>
+      </tr>
+    </thead>
+    <tbody template repeat="{{ r in rs }}">
+    
+      <tr>
+        <td>{{ r['Employee']['Name'] }}</td>
+        <td>{{ r['Job'] }}</td>
+        <td>20/160</td>
+        <td>{{ r['Late'] }}</td>
+        <td>{{ r['WorkedDay'] }}/{{ r['WorkedHour'] }}</td>
+      </tr>
+    </tbody>
+    </table>
+    
+  </section>
+  
+  <script type="text/javascript" defer>
+    function rpt_time01(params) {
+      db.rpt_time01.drop();
+      
+      var q = {};
+      
+      if (params.Company) {
+        q["Company"] = params.Company; 
+      }
+      
+      if (params.Dept) {
+        q["Dept"] = params.Dept;
+      }
+      
+      var rs = db.Attendance.group({
+        'key': {'Employee':1}, 
+        'cond': q, 
+        'reduce': function(c,r) {
+            r.WorkedDay += 1;
+            r.WorkedHour += 8;
+            r.Late += 0;
+         }, 
+         'initial': {'WorkedDay': 0, 'WorkedHour': 0, 'Late':0} 
+      });
+
+      if (rs.length > 0) {
+        db.rpt_time01.insert(rs);
+      }
+      
+      return "OK";
+    }
+  </script>
+  
+  <footer>
+  </footer>
+</template>
+<script>
+  Polymer('rpt-time01', {  rs: []  });
+</script>
+</dom-module>

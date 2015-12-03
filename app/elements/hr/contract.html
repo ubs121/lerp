@@ -1,0 +1,76 @@
+<meta charset="utf-8">
+<link rel="import" href="../polymer/polymer.html">
+
+
+<dom-module id="contract-form">
+<template>
+
+  <record-set id="rsEmp" name="Employee"
+    project="['_id', 'Name', 'LastName', 'Job', 'Position', 'Dept']"
+    filter="{'Status': {'$ne':'гарсан'} }"
+    sort="['Name']"
+    limit=0
+    auto>
+  </record-set>
+
+  <record-set id="rsCompany" name="Company" limit="0" auto
+    sort="['_id']">
+  </record-set>
+
+  <div class="col-md-6">
+    <x-input label="Гэрээний №" value="{{data.current['Name']}}" editing="{{editing}}"></x-input>
+
+    <x-select label="Гэрээний төрөл"
+      value="{{data.current['Type']}}"
+      options="['Хөдөлмөрийн гэрээ', 'Туршилтын ажилтан', 'Албан тушаал өөрчилсөн', 'Группын компани хооронд шилжсэн', 'Ажлаас гарсан', 'Цалин өөрчлөгдсөн']"
+      editing="{{editing}}"></x-select>
+
+    <x-select label="Ажилтан"
+      value="{{data.current['Employee']}}"
+      type="Map"
+      options="{{ $['rsEmp'].rs }}"
+      on-change="{{populateEmp}}"
+      editing="{{editing}}"
+      required>
+    </x-select>
+
+    <x-input label="Гэрээ байгуулсан огноо" value="{{data.current['DateStart']}}" type="date" editing="{{editing}}"></x-input>
+    <x-input label="Хугацаа" value="{{data.current['Duration']}}"></x-input>
+    <x-input label="Дуусах огноо" value="{{data.current['DateEnd']}}" type="date" editing="{{editing}}"></x-input>
+
+  </div>
+
+  <div class="col-md-6">
+    <x-select label="Компани" value="{{data.current['Company']}}"
+          options="{{ $['rsCompany'].rs }}" editing="{{editing}}"></x-select>
+
+    <x-input label="Нэгж" value="{{data.current['Dept']}}" editing="{{editing}}"></x-input>
+    <x-input label="Ажлын байр" value="{{data.current['Job']}}" editing="{{editing}}"></x-input>
+    <x-input label="Цалин" value="{{data.current['Wage']}}" editing="{{editing}}"></x-input>
+    <x-input label="Нэмэгдэл" value="{{data.current['Advantages']}}" editing="{{editing}}"></x-input>
+
+    <x-note label="Тайлбар" value="{{data.current['Notes']}}" editing="{{editing}}"></x-note>
+  </div>
+
+  <hr/>
+
+  <div class="col-md-12">
+    <x-file label="Хавсралт"
+      context="{{data.context}}"
+      value="{{data.current['Attachment']}}"
+      editing="{{editing}}"></x-file>
+  </div>
+
+</template>
+
+<script>
+"use strict";
+class ContractForm {
+  beforeRegister() {
+    this.is = "contract-form";
+  }
+}
+Polymer(ContractForm);
+</script>
+
+</dom-module>

@@ -1,0 +1,28 @@
+[
+ {
+  "_id":"admin",
+  "Password":"123",
+  "Description": "Super admin",
+  "Role": "admin",
+  "Company": "Holding"
+ },
+ {
+   "_id": "system",
+   "Password": "123",
+   "Description": "системийн хэрэглэгч",
+   "Role": "system"
+ },
+ {
+  "_id":"ubs121",
+  "Name":"Ууганбаяр.С",
+  "Password":"123",
+  "Role": "holding",
+  "Company":"Holding"
+ },
+ {
+  "_id":"hr1",
+  "Password":"123",
+  "Role": "hr",
+  "Company": "Ferro"
+ }
+]

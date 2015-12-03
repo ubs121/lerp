@@ -1,0 +1,46 @@
+[
+  {
+    "_id": "user_guide",
+    "Name": "UserGuide.pdf",
+    "User": "admin",
+    "Folder": "",
+    "Notes": "Хэрэглэгчийн гарын авлага",
+    "Type": "pdf"
+  },
+  {
+    "_id": "admin_guide",
+    "Name": "AdminGuide.pdf",
+    "User": "admin",
+    "Folder": "",
+    "Notes": "Админы гарын авлага",
+    "Type": "pdf"
+  },
+  {
+    "_id": "leave_tmpl",
+    "Name": "Leave application Form.pdf",
+    "User": "admin",
+    "Folder": "",
+    "Notes": "Амралт чөлөөний хуудас",
+    "Type": "pdf"
+  },
+  {
+    "_id": "reward_tmpl",
+    "Name": "employee care.form.pdf",
+    "User": "admin",
+    "Folder": "",
+    "Notes": "АЖИЛТАНД ҮЗҮҮЛЭХ БУЦАЛТГҮЙ ТУСЛАМЖИЙН МАЯГТ",
+    "Type": "pdf"
+  },
+  {
+    "_id": "lerp_install",
+    "Type": "markdown",
+    "Name": "Lerp програмыг суурилуулах",
+    "Notes": "1. mongodb суулгана  2. pymongo суулгана  3. програмын кодыг хуулж байршуулна  4. SSL тохируулах 5.  файлд програмын тохиргоог хийнэ"
+  },
+  {
+    "_id": "lerp_start",
+    "Type": "markdown",
+    "Name": "Lerp програмыг эхлүүлэх",
+    "Notes": "  1. Өгөгдлийн баазыг асаана   2. ./lerp командыг өгнө (TODO: service болгож бэлтгэх)"
+  }
+]

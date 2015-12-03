@@ -1,0 +1,96 @@
+<meta charset="utf-8">
+<link rel="import" href="../polymer/polymer.html">
+
+
+<dom-module id="rpt-hr02" extend="x-report" noscript>
+<template>
+<header>
+  <h2>Шинэ ажилтан</h2>
+</header>
+
+<!-- params -->
+<div class="panel-body">
+  <form id="params" class="form-horizontal" role="form"
+    style="display: none;">
+    <div class="form-group">
+      <label for="Company" class="col-sm-2 control-label">Компани</label>
+      <div class="col-sm-4">
+        <select id="Company" class="form-control">
+          <option></option>
+          <option template repeat="{{ c in companies.rs}}"
+            value="{{ c['_id'] }}">{{ c['Name'] }}</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="Month" class="col-sm-2 control-label">Сар</label>
+      <div class="col-sm-4">
+        <input value="{{params['Month']}}" type="month" id="Month"
+          class="form-control">
+      </div>
+    </div>
+  </form>
+</div>
+
+<section>
+
+  <table class="table" name="New hire">
+    <thead>
+      <tr>
+        <th>Регистр</th>
+        <th>Нэгж</th>
+        <th>Нэр</th>
+        <th>Албан тушаал</th>
+        <th>Ажилд орсон огноо</th>
+        <th>Туршилт</th>
+      </tr>
+    </thead>
+    <tbody template repeat="{{ r in rs }}">
+
+      <!-- TODO: group by Company -->
+      <tr>
+        <td>{{ r['SNo'] }}</td>
+        <td>{{ r['Department'] }}</td>
+        <td>{{ r['Name'] }}</td>
+        <td>{{ r['Job'] }}</td>
+        <td>{{ r['HireDate'] }}</td>
+        <td>{{ r['EndProbationary'] }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+</section>
+
+<script type="text/javascript" defer runAt="server">
+    function rpt_hr02(params) {
+      db.rpt_hr02.drop();
+
+      var q = {};
+
+      if (params.Company) {
+        q["Company"] = params.Company;
+      }
+
+      if (params.Month) {
+        q["JoinedDate"] = {'$gt': params.Month };
+      }
+
+      db.Employee.find(q).forEach( function(s) {
+        var o = {};
+        o.SNo = "";
+        o.Name = s.Name + " " + s.LastName;
+        o.Department = s.Dept || "";
+        o.Job = s.Job||"";
+        o.HireDate = s.JoinedDate||"";
+        o.EndProbationary = s.TrialEndDate||"";
+
+        db.rpt_hr02.save(o);
+      });
+
+      return "OK";
+    }
+</script>
+<footer> </footer>
+</template>
+
+</dom-module>

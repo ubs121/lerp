@@ -1,0 +1,169 @@
+<meta charset="utf-8">
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/neon-animation/neon-animated-pages.html">
+<link rel="import" href="../../bower_components/neon-animation/neon-animatable.html">
+<link rel="import" href="../../bower_components/neon-animation/neon-animations.html">
+<link rel="import" href="../../bower_components/iron-a11y-keys/iron-a11y-keys.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../bower_components/paper-styles/paper-styles.html">
+<!--
+<link rel="import" href="../icons.html">
+<link rel="import" href="doc-form.html">
+-->
+<!-- @see chrome://bookmarks -->
+<dom-module id="doc-list">
+
+<style is="custom-style">
+  .left {
+    position: absolute;
+    top: 60px;
+    left: 0px;
+    height: 600px;
+    padding-top: 250px;
+  }
+  .right {
+    position: absolute;
+    top: 60px;
+    right: 0px;
+    height: 600px;
+    padding-top: 250px;
+  }
+
+  neon-animatable {
+    display: none;
+  }
+
+  neon-animatable:nth-child(1) {
+    background:#f44336;
+  }
+
+  neon-animatable:nth-child(2) {
+    background:#2196f3;
+  }
+
+  neon-animatable:nth-child(3) {
+    background:#ff9800;
+  }
+
+  neon-animatable:nth-child(4) {
+    background:#4caf50;
+  }
+
+  neon-animatable:nth-child(5) {
+    background:#9c27b0;
+  }
+
+
+
+</style>
+
+<template>
+  <iron-a11y-keys target="{{}}" keys="left right" on-keys-pressed="keyHandler"></iron-a11y-keys>
+
+  <neon-animated-pages id="pager" class="flex" selected="0" entry-animation="slide-from-right-animation" exit-animation="slide-left-animation">
+    <neon-animatable>
+      <paper-material elevation="1">
+      1
+      </paper-material>
+    </neon-animatable>
+
+    <neon-animatable>2</neon-animatable>
+    <neon-animatable>3</neon-animatable>
+    <neon-animatable>4</neon-animatable>
+    <neon-animatable>5</neon-animatable>
+  </neon-animated-pages>
+
+  <paper-button on-tap="prevPage" class="left">
+    <iron-icon icon="arrow-back"></iron-icon>
+  </paper-button>
+
+  <paper-button on-tap="nextPage" class="right">
+    <template is="dom-if" if="{{!loading}}">
+      <iron-icon icon="arrow-forward"></iron-icon>
+    </template>
+    <template is="dom-if" if="{{loading}">
+      <paper-spinner active></paper-spinner>
+    </template>
+  </paper-button>
+
+</template>
+
+<script>
+'use strict';
+
+const BOOKS_PER_PAGE = 15;
+
+class DocList {
+  constructor() {
+    this.currentPage = 0; // хуудас
+    this.loading = false; // өгөгдөл ачаалж байна
+  }
+
+  beforeRegister() {
+    this.is = "doc-list";
+    this.properties = {
+
+    }
+  }
+
+  // товчлуулаар гүйлгэх
+  keyHandler(e) {
+    if (e.detail.key== 'right') {
+      this.nextPage();
+    } else if (e.detail.key == 'left') {
+      this.prevPage();
+    }
+  }
+
+  // хуудас нэмэх, харуулах
+  loadPage() {
+    // if (this.currentPage < 0) return;
+    //
+    // app.db
+    //   .select()
+    //   .from(docs)
+    //   .where(docs.gender.eq(true))
+    //   .skip(this.currentPage * BOOKS_PER_PAGE)
+    //   .limit(BOOKS_PER_PAGE)
+    //   .exec();
+    //
+    // var section = new Element.section();
+    // BookListPage p = new Element.tag("doc-list-page");
+    // p.data = rs;
+    // section.children.add(p);
+    //
+    // this.pagerEl = shadowRoot.querySelector("#pager");
+    // this.pagerEl.children.add(section);
+  }
+
+  nextPage(e, detail, target) {
+    //int n = pagerEl.children.length;
+    this.currentPage = this.currentPage + 1;
+
+    // if (this.currentPage < n - 1) {
+    //   this.currentPage = this.currentPage + 1;
+    //   this.loadPage();
+    // } else {
+    //   // өгөгдөл байгаа эсэх
+    //   if (n * BOOKS_PER_PAGE < data.total) {
+    //     this.loading = true;
+    //     this.loadPage();
+    //   }
+    // }
+
+
+  }
+
+  prevPage(e, detail, target) {
+    if (this.currentPage > 0) {
+      this.currentPage = this.currentPage - 1;
+      this.loadPage();
+    }
+  }
+
+}
+
+Polymer(DocList);
+</script>
+</dom-module>

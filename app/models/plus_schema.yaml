@@ -1,0 +1,93 @@
+name: lerp
+version: 1
+table:
+  Post:
+    column:
+      id : string # "post2",
+    	name : string # гарчиг
+    	type: string # мэдээний төрөл: news|greeting|idea|event|survey 
+    	date : datetime # нийтэлсэн огноо
+    	likes : string # likes
+    	comments : string #
+    	to : string # [  "public" ],
+    	text : string # агуулга
+    	commentable : boolean # коммент бичиж болох эсэх
+    	attachment: string # хавсралт: зураг, видео, файл, ...
+
+      survey: string # санал асуулга бол хаяг нь энд байна
+      event": string # үйл явдал бол хаяг нь энд байна
+
+    	user : string # бичсэн ажилтан
+
+  PostComment:
+    column:
+      post: string
+      user: string
+      date: datetime
+      comment: string
+
+  PlusGroup:
+    column:
+      id : string # id
+      name : string # нэр
+      description: string # тайлбар
+      image : string # logo зураг
+      company : string # компани
+      subscription: boolean # элсэх боломжтой эсэх
+
+  GroupFollowers:
+    column:
+      emp: string
+      group: string
+
+  Event:
+    column:
+      id: string
+      name: string # үйл явдлын нэр
+      type: string # үйл явдлын төрөл "training|event" ['сургалт', 'спорт', 'уулзалт', 'хурал', 'зугаалга']
+      dateStart: datetime # эхлэх огноо
+      duration: integer # үйл явдлын хугацаа (цагаар)
+      dateEnd: datetime # дуусах огноо
+      mainSpeaker: string # илтгэгч буюу хөтлөх хүн
+      subscription: boolean # "true|false",
+      company : string
+
+  EventParticipants:
+    column:
+      emp: string
+      event: string
+      name: string
+
+  Survey:
+    column:
+      id: string
+      name: string
+      type: string # асуулгын төрөл "Human Resources, Supplier Selection, Customer Feedback, ...",
+      dateOpen: datetime # эхлэх огноо
+      dateClose: datetime # дуусах огноо
+      maxResponseLimit: integer # Maximum Answer Limit
+      responseUser: integer # Maximum Answer per User
+      state: string # төлөв: "нээлттэй|хаагдсан|цуцалсан"
+      notes: string
+      company: string
+
+ SurveyQuestion:
+   column:
+     survey: string
+     id: string
+     question: string # асуулт текст
+     sequence: integer # эрэмбэ
+     answers:[],
+     answerType: string # хариултын төрөл "m2o, m2m, fill, rating, ...",
+     created: datetime # үүссэн огноо
+     createdBy: string
+     updated: datetime
+     updatedBy: string
+
+SurveyFeedback:
+  column:
+    date: datetime
+    survey: string
+    question: string
+    user: string
+    answer: string # хариулт

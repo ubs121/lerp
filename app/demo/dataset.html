@@ -1,0 +1,49 @@
+<!doctype html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <title>Lerp Demo</title>
+    <script src="../bower_components/lovefield/dist/lovefield.min.js"></script>
+  </head>
+  <body>
+
+    <p>Lerp dataset</p>
+
+    <script>
+    var db = lf.schema.create('lerp', 1);
+
+    db.createTable('Employee').
+        addColumn('id', lf.Type.INTEGER).
+        addColumn('name', lf.Type.STRING).
+        addColumn('joined', lf.Type.DATE_TIME).
+        addColumn('gender', lf.Type.BOOLEAN).
+        addPrimaryKey(['id']).
+        addIndex('idxJoined', ['joined'], false, lf.Order.DESC);
+
+    var lerpDb;
+    var emp;
+    db.connect().then(function(db) {
+      lerpDb = db;
+      emp = db.getSchema().table('Employee');
+
+      var row = emp.createRow({
+        'id': 1,
+        'name': 'Uuganbayar',
+        'joined': new Date(),
+        'gender': true
+      });
+
+      return db.insertOrReplace().into(emp).values([row]).exec();
+    }).then(function() {
+      return lerpDb.select().from(emp).where(emp.gender.eq(true)).exec();
+    }).then(function(results) {
+      results.forEach(function(row) {
+        console.log(row['name'], 'joined', row['joined']);
+      });
+    });
+
+    </script>
+  </body>
+</html>

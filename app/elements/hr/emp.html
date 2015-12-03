@@ -1,0 +1,288 @@
+<meta charset="utf-8">
+<link rel="import" href=".../polymer/polymer.html">
+<link rel="import" href="anket.html">
+<link rel="import" href="contract.html">
+<link rel="import" href="eval.html">
+<link rel="import" href="training.html">
+
+<dom-module id="emp-kanban">
+<template>
+
+  <template is="dom-repeat" items="{{data as r}}">
+
+    <paper-card style="height: 220px; width: 200px;">
+      <core-image class="img-thumbnail" style="height: 140px" on-tap="{{ open }}"
+          alt="Зураг байхгүй"
+          _src="{{ data.context.fileUrl(r.value['_id']) }}">
+      </core-image>
+
+      <address>
+        <small><strong>{{r.name}} {{r.lastName}}</strong></small>
+        <br/>
+
+        <small>{{r.dept}}, {{r.position}}</small>
+        <br/>
+
+        <small>{{r.workPhone}}</small>
+        <small>{{r.workEmail}}</small>
+
+      </address>
+    </paper-card>
+  </template>
+
+</template>
+
+<script>
+'use strict';
+
+class EmpKanban {
+  beforeRegister() {
+    this.is = "emp-kanban";
+  }
+
+  ready() {
+
+  }
+}
+
+Polymer(EmpKanban);
+
+</script>
+
+</dom-module>
+
+<dom-module id="emp-form">
+<template>
+
+  <!--  лавлах өгөгдөл -->
+  <record-set id="rsJob" name="Job" limit="0" auto
+    sort="['_id']">
+  </record-set>
+  <record-set id="rsDept" name="Dept" limit="0" auto
+    sort="['_id']">
+  </record-set>
+  <record-set id="rsCompany" name="Company" limit="0" auto
+    sort="['_id']">
+  </record-set>
+
+  <!-- зураг  -->
+  <div style="width: 20%; float: left;">
+    <x-file value="{{data.current['Photo']}}" type="image"
+      context="{{data.context}}"
+      style="width: 100%;"
+      on-change="{{ saveAsUserPhoto }}"
+      editing="{{editing}}"></x-file>
+  </div>
+
+  <!-- хувийн мэдээлэл -->
+  <record-set id="rsPersonal" name="Personal" auto
+    parent="{{data}}"
+    link="{'parent': '_id', 'child':'_id'}"
+    on-load="{{calcAge}}">
+  </record-set>
+
+  <!-- карер мэдээлэл -->
+  <record-set id="rsCareer" name="Career" auto
+    parent="{{data}}"
+    link="{'parent': '_id', 'child':'_id'}">
+  </record-set>
+
+  <!-- үнэлгээ -->
+  <record-set id="rsPerf" name="Appraisal" auto
+    project="['Name', 'Rating', 'Manager', 'Notes']"
+    labels="{'Name':'Огноо', 'Rating':'Үнэлгээ', 'Manager':'Үнэлсэн удирдлага', 'Notes': 'Тэмдэглэл'}"
+    parent="{{data}}"
+    link="{'parent': '_id', 'child':'Employee._id'}">
+  </record-set>
+
+  <!-- гэрээ -->
+  <record-set id="rsContract" name="Contract" auto
+    project="['Name', 'Type', 'DateStart', 'DateEnd', 'Wage', 'Notes']"
+    on-load="{{calcWorkedYear}}"
+    parent="{{data}}"
+    link="{'parent': '_id', 'child':'Employee._id'}">
+  </record-set>
+
+  <!-- сургалт -->
+  <record-set id="rsTraining" name="Training" auto
+    project="['Name', 'Date', 'Duration', 'Notes']"
+    parent="{{data}}"
+    link="{'parent': '_id', 'child':'Employee._id'}">
+  </record-set>
+
+  <!-- нэр  -->
+  <div style="width: 78%; float: left; margin-left: 2%;">
+      <x-input label="Регистр" value="{{data.current['_id']}}" required="true" editing="{{editing}}"></x-input>
+      <x-input label="Нэр" value="{{data.current['Name']}}" editing="{{editing}}"></x-input>
+      <x-input label="Эцгийн нэр" value="{{data.current['LastName']}}" editing="{{editing}}"></x-input>
+
+      <x-select label="Хүйс" value="{{data.current['Gender']}}"
+        options="['эр', 'эм']" editing="{{editing}}"></x-select>
+
+      <x-select label="Төлөв" value="{{data.current['Status']}}"
+        options="['ээлжийн амралттай', 'жирэмсэний амралттай', 'сул зогсолт', 'чөлөөтэй', 'гарсан']" editing="{{editing}}"></x-select>
+
+      <template if="{{data.current['Status']=='гарсан'}}">
+
+          <x-input label="Гарсан огноо"
+            value="{{ data.current['ResignationDate'] }}"
+            editing="{{editing}}">
+          </x-input>
+
+          <x-select label="Гарсан шалтгаан"
+            value="{{ data.current['ResignationReason'] }}"
+            editing="{{editing}}"
+            options="['өөрийн хүсэлтээр', 'хаяж явсан', 'гэрээ цуцалсан', 'гэрээ дууссан', 'тэтгэвэрт', 'цомхотголоор', 'нас барсан']">
+          </x-select>
+
+          <x-check label="Эргэн орох боломжтой"
+            value="{{ data.current['WillBack'] }}"
+            editing="{{editing}}">
+          </x-check>
+       </template>
+   </div>
+
+  <!-- tab nav  -->
+  <div class="row" style="clear:left; min-height: 200px;">
+    <ul class="nav nav-tabs">
+      <li class="{{ {'active': tab=='#/emp'} }}">
+        <a href="#/emp" on-click="{{showTab}}">Ажилтан</a> </li>
+      <li class="{{ {'active': tab=='#/contract'} }}">
+        <a href="#/contract" on-click="{{showTab}}">Гэрээ</a></li>
+      <li class="{{ {'active': tab=='#/eval'} }}">
+        <a href="#/eval" on-click="{{showTab}}">Ажлын гүйцэтгэл</a></li>
+      <li class="{{ {'active': tab=='#/training'} }}">
+        <a href="#/training" on-click="{{showTab}}">Сургалт</a></li>
+
+      <li class="{{ {'active': tab=='#/career'} }}">
+        <a href="#/career" on-click="{{showTab}}">Туршлага</a></li>
+      <li class="{{ {'active': tab=='#/personal'} }}">
+        <a href="#/personal" on-click="{{showTab}}">Хувийн мэдээлэл</a></li>
+
+    </ul>
+
+    <!-- tab content -->
+    <div id="content" class="tab-content" style="padding: 15px;">
+
+      <div class="tab-pane fade {{ {'active': tab=='#/emp'} }} in">
+        <x-select label="Компани" value="{{data.current['Company']}}"
+          options="{{ $['rsCompany'].rs }}" editing="{{editing}}"></x-select>
+
+        <x-select label="Нэгж" value="{{data.current['Dept']}}"
+          options="{{ $['rsDept'].rs }}"  editing="{{editing}}"></x-select>
+
+        <x-select label="Ажлын байр" value="{{data.current['Job']}}"
+          options="{{ $['rsJob'].rs }}" on-change="{{onJobChange}}" editing="{{editing}}"></x-select>
+
+        <x-input label="Албан тушаал" value="{{data.current['Position']}}" editing="{{editing}}"></x-input>
+        <x-input label="Дээд удирдлага" value="{{data.current['ReportTo']}}" editing="{{editing}}"></x-input>
+
+        <x-input label="Ажлын өрөө" value="{{data.current['WorkLocation']}}" editing="{{editing}}"></x-input>
+        <x-input label="Ажлын утас" value="{{data.current['WorkPhone']}}" editing="{{editing}}"></x-input>
+        <x-input label="Ажлын э-мэйл" value="{{data.current['WorkEmail']}}" type="email" editing="{{editing}}"></x-input>
+        <x-input label="Ирцийн #" value="{{data.current['CardNo']}}" editing="{{editing}}"></x-input>
+
+        <x-note label="Тэмдэглэл" value="{{data.current['Notes']}}" editing="{{editing}}"></x-note>
+
+        <br/>
+
+        <x-check label="Осолд өртсөн" value="{{data.current['Casual']}}" editing="{{editing}}"></x-check>
+
+        <template if="{{data.current['Casual']}}">
+        <x-note label="Ослын тухай" value="{{data.current['CasualNotes']}}" editing="{{editing}}"></x-note>
+        </template>
+
+
+      </div>
+
+      <!-- Үнэлгээ -->
+      <div class="tab-pane fade {{ {'active': tab=='#/eval'} }} in">
+        <x-input label="Үнэлэх схем" value="{{data.current['EvalPlan']}}" editing="{{editing}}"></x-input>
+        <x-input label="Дараагийн үнэлгээ" value="{{data.current['EvalDate']}}" type="date" editing="{{editing}}"></x-input>
+
+        <x-list data="{{ $['rsPerf'] }}" embedded></x-list>
+
+        <!--
+        <view-mgr model='Appraisal' embedded
+          currentView='list'
+          form='eval-form'
+          list='x-list'
+          data="{{ $['rsPerf'] }}"
+          on-create="{{ onNewAppraisal }}">
+        </view-mgr>
+        -->
+
+      </div>
+
+      <!-- Гэрээ -->
+      <div class="tab-pane fade {{ {'active': tab=='#/contract'} }} in">
+        <x-input label="Ажилд орсон огноо" value="{{data.current['JoinedDate']}}" type="date" editing="{{editing}}"></x-input>
+        <x-input label="Туршилт дууссан огноо" value="{{data.current['TrialEndDate']}}" type="date" editing="{{editing}}"></x-input>
+        <x-input label="Эрэлд ажилласан жил" value="{{data.current['WorkingYearHere']}}" type="number" editing="false"></x-input>
+
+        <!-- Цалингийн данс -->
+        <x-select label="Банк"
+          value="{{data.current['BankName']}}"
+          options="['Ариг','Голомт','ХААН','ХХБ','Хас','Төрийн банк', 'Улаанбаатар банк', 'Капитрон']"
+          editing="{{editing}}">
+        </x-select>
+
+        <x-input label="Банкны данс" value="{{data.current['BankAccount']}}" editing="{{editing}}"></x-input>
+
+        <x-list data="{{ $['rsContract'] }}" embedded></x-list>
+
+        <!--
+        <view-mgr model='Contract' embedded
+          currentView='list'
+          form='emp-contract'
+          list='x-list'
+          data="{{ $['rsContract'] }}"
+          on-create="{{ onNewContract }}">
+        </view-mgr>
+        -->
+
+
+      </div>
+
+      <!-- Хамрагдсан сургалт -->
+      <div class="tab-pane fade {{ {'active': tab=='#/training'} }} in">
+        <x-list data="{{ $['rsTraining'] }}" embedded></x-list>
+
+        <!--
+        <view-mgr model='Training' embedded
+          currentView='list'
+          form='emp-training'
+          list='x-list'
+          data="{{ $['rsTraining'] }}"
+          on-create="{{ onNewTraining }}">
+        </view-mgr>
+        -->
+
+      </div>
+
+      <!-- Ажлын туршлага -->
+      <div class="tab-pane fade {{ {'active': tab=='#/career'} }} in">
+        <person-career  data="{{ $['rsCareer'] }}" embedded editing="{{editing}}"></person-career>
+      </div>
+
+      <!-- Хувийн мэдээлэл -->
+      <div class="tab-pane fade {{ {'active': tab=='#/personal'} }} in">
+        <person-personal data="{{ $['rsPersonal'] }}" embedded editing="{{editing}}"></person-personal>
+      </div>
+
+     </div> <!-- tab content -->
+
+
+  </div>
+
+</template>
+
+
+</dom-module>
+
+
+
+
+
+
+<script type="application/dart" src="emp.dart"></script>

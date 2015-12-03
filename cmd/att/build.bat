@@ -1,0 +1,1 @@
+csc /r:Interop.zkemkeeper.dll *.cs

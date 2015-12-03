@@ -1,0 +1,60 @@
+<meta charset="utf-8">
+<link rel="import" href="packages/polymer/polymer.html">
+<dom-module id="rpt-survey" attributes="rs">
+<template>   
+ <link rel="stylesheet" href="packages/bootstrap_for_pub/css/bootstrap.min.css">
+ <header>
+    <h2>Survey Result</h2>
+  </header>
+  
+  <section>
+    <!-- TODO: Графикаар дүрслэх -->
+    <template repeat="{{ r in rs }}">
+      <div>
+         <h3>Асуулт: {{ r['Question']}} </h3>
+         <template repeat="{{ a in r['Answers'].keys }}">
+          <p>{{a}} - {{ r['Answers'][a] }}</p>
+         </template>
+      </div>
+    </template>
+    
+  </section>
+  
+  <script type="text/javascript" defer>
+    function rpt_survey(params) {
+      db.rpt_survey.drop();
+      
+      var q = {};
+      q["Survey"] = params.Survey;
+      // q["Date"] = ""; сүүлийн зарласан интервалаар шүүх хэрэгтэй
+            
+      var rs = db.SurveyFeedback.group({
+        'key': {'Question': 1},
+        'cond': q,
+        'reduce': function(c,r) {
+          if (r.Answers[c.Answer]) {
+            r.Answers[c.Answer] += 1;
+          } else {
+            r.Answers[c.Answer] = 1;
+          }
+        },
+        'initial': {
+          'Answers': {}
+        }
+      });
+      
+      if (rs.length > 0) {
+      	db.rpt_survey.insert(rs);
+      }
+      
+      return "OK";
+    }
+  </script>
+  
+  <footer>
+  </footer>
+</template>
+<script>
+  Polymer('rpt-survey', {  rs: []  });
+</script>
+</dom-module>

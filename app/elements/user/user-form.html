@@ -1,0 +1,56 @@
+<meta charset="utf-8">
+<link rel="import" href="../polymer/polymer.html">
+
+<dom-module id="user-form">
+<template>
+  
+  <record-set id="rsCompany" name="Company"
+    project="['_id', 'Name']"
+    limit=0
+    auto>
+  </record-set>
+
+  <record-set id="rsRole" name="Role"
+    project="['_id', 'Name']"
+    limit=0
+    auto>
+  </record-set>
+
+  <form class="form-horizontal" role="form">
+    <div class="col-md-6">
+      <x-input label="ID" value="{{data.current['_id']}}" editing="{{editing}}"></x-input>
+
+      <x-input label="Нэр" value="{{data.current['Name']}}" editing="{{editing}}"></x-input>
+      <x-input label="Нууц үг" value="{{data.current['Password']}}" type="password" editing="{{editing}}"></x-input>
+      <x-input label="Тайлбар" value="{{data.current['Description']}}" editing="{{editing}}"></x-input>
+
+      <x-select label="Компани"
+        value="{{data.current['Company']}}"
+        options="{{ $['rsCompany'].rs }}"
+        editing="{{editing}}"></x-select>
+
+      <x-input label="Э-мэйл" type="email" value="{{data.current['Email']}}" editing="{{editing}}"></x-input>
+      <x-check label="Идэвхитэй" value="{{data.current['Active']}}" editing="{{editing}}"></x-check>
+    </div>
+
+    <div class="col-md-6">
+      <x-select label="Дүр"
+        value="{{data.current['Role']}}"
+        options="{{ $['rsRole'].rs }}"
+        editing="{{editing}}"></x-select>
+    </div>
+
+
+    <template if="{{ editing }}">
+    <div>
+      <button on-click="{{updateFromEmp}}" class="btn btn-default">Ажилтны мэдээллээс татах</button>
+    </div>
+    </template>
+
+
+  </form>
+
+</template>
+
+<script type="application/dart" src="user-form.dart"></script>
+</dom-module>

@@ -1,0 +1,18 @@
+[
+{"_id": "rpt-hr01", "Name": "Орон тоо", "Type": "hr", "Params":["Company"]},
+{"_id": "rpt-hr02", "Name": "Шинэ ажилтан (сараар)", "Type": "hr", "Params":["Month", "Company"]},
+{"_id": "rpt-hr03", "Name": "Нөөц бүрдүүлэлт", "Type": "hr", "Params":["Company", "Month"]},
+{"_id": "rpt-hr04", "Name": "Туршилтын ажилтан", "Type": "hr"},
+{"_id": "rpt-hr10", "Name": "Хүний нөөцийн эргэц", "Type": "hr","Params":["Company"]},
+{"_id": "rpt-hr11", "Name": "Ажилтны хөдөлгөөн", "Type": "hr", "Params":["Company", "Month"]},
+{"_id": "rpt-hr12", "Name": "Амралт, чөлөө (жилээр)", "Type": "hr", "Params":["Company"]},
+{"_id": "rpt-hr13", "Name": "Гарсан ажилтан", "Type": "hr", "Params":["Company", "Month"]},
+{"_id": "rpt-hr20", "Name": "Ажлын үнэлгээ", "Type": "perf", "Params":["Company", "Dept"]},
+{"_id": "rpt-sal01", "Name": "Цалингийн тайлан", "Type": "salary", "Params":["Company", "Dept"]},
+{"_id": "rpt-time01", "Name": "Цагийн хүснэгт", "Type": "salary", "Params":["Company", "Dept"]},
+{"_id": "rpt-dev01", "Name": "Сургалт, хөгжил", "Type": "dev"},
+{"_id": "rpt-dev02", "Name": "Үйл явдал", "Type": "dev", "Params":["Company", "Month"]},
+{"_id": "rpt-survey", "Name": "Судалгааны үр дүн", "Type": "survey", "Params": ["Survey"]},
+{"_id": "rpt-topidea", "Name": "Шинэ санаа", "Type": "idea"},
+{"_id": "rpt-genidea", "Name": "Top 10 new idea creaters", "Type": "idea"}
+]

@@ -1,0 +1,35 @@
+<meta charset="utf-8">
+<link rel="import" href="../polymer/polymer.html">
+
+<!-- Хэлтэс, нэгж -->
+<dom-module id="hr-dept">
+<template>
+
+  <record-set id="rsCompany" name="Company" limit="0" auto>
+  </record-set>
+
+  <form class="form-horizontal">
+     <x-select label="Компани" value="{{data.current['Company']}}"
+          options="{{ $['rsCompany'].rs }}" editing="{{editing}}"></x-select>
+     <x-input label="Товч нэр" value="{{data.current['_id']}}" editing="{{editing}}"></x-input>
+     <x-input label="Бүтэн нэр" value="{{data.current['Name']}}" editing="{{editing}}"></x-input>
+     <x-input label="Менежер" value="{{data.current['Manager']}}" editing="{{editing}}"></x-input>
+     <x-input label="Дээд нэгж" value="{{data.current['Parent']}}" editing="{{editing}}"></x-input>
+     <x-input label="Өнгө" value="{{data.current['Color']}}" type="color" editing="{{editing}}"></x-input>
+  </form>
+</template>
+
+</dom-module>
+
+<!-- Бүтцийн зураг -->
+<dom-module id="dept-chart">
+<template>
+<div id="chart" style="width: 100%;">
+
+</div>
+
+</template>
+
+</dom-module>
+
+<script type="application/dart" src="dept.dart"></script>

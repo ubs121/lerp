@@ -1,0 +1,57 @@
+<meta charset="utf-8">
+<link rel="import" href="../polymer/polymer.html">
+
+<dom-module id="event-form">
+<template>
+
+  <record-set id="rsCompany" name="Company" auto
+      context="{{data.context}}"
+      project="['_id', 'Name']">
+  </record-set>
+
+  <div style="width: 50%; float: left">
+    <x-select label="Компани"
+        value="{{data.current['Company']}}"
+        options="{{ $['rsCompany'].rs }}"
+        editing="{{editing}}">
+    </x-select>
+
+    <x-input label="Үйл явдал" value="{{data.current['Name']}}" editing="{{editing}}"></x-input>
+
+    <x-select label="Төрөл" value="{{data.current['Type']}}"
+      options="['сургалт', 'спорт', 'уулзалт', 'хурал', 'зугаалга']"
+      editing="{{editing}}">
+    </x-select>
+
+    <x-check label="Захиалгаар" value="{{data.current['Subscription']}}"></x-check>
+    <x-input label="Илтгэгч/Гол хүн" value="{{data.current['MainSpeaker']}}" editing="{{editing}}"></x-input>
+
+    <x-select label="Хариуцах хүн" value="{{data.current['Responsible']}}" type="Map"
+      options="{{empOpts}}" editing="{{editing}}">
+    </x-select>
+  </div>
+
+  <div style="width: 50%; float: left">
+    <x-input label="Эхлэх огноо" value="{{data.current['DateStart']}}" type="date" editing="{{editing}}"></x-input>
+    <x-input label="Дуусах огноо" value="{{data.current['DateEnd']}}" type="date" editing="{{editing}}"></x-input>
+  </div>
+
+  <div style="width: 100%">
+    <x-table label="Оролцогчид"
+      rs="{{ data.current['Participants'] }}"
+      columns="{{ partCols  }}"
+      editing="{{editing}}">
+    </x-table>
+  </div>
+
+</template>
+
+<script>
+"use strict";
+
+class Event {
+
+}
+</script>
+
+</dom-module>

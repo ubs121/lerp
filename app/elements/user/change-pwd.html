@@ -1,0 +1,33 @@
+<div id="dlgPwd" class="modal fade" tabindex="-1" role="dialog"
+    aria-hidden="false" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button on-click="{{ closePwdDlg }}" type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">Нууц үг солих</h4>
+      </div>
+      <div class="modal-body">
+         <form>
+          <div class="form-group">
+            <label for='oldPwd'>Одоогийн нууц үг:</label>
+            <input id="oldPwd" type='password' class="form-control">
+          </div>
+          <div class="form-group">
+            <label for='newPwd'>Шинэ нууц үг:</label>
+            <input id="newPwd" type='password' class="form-control">
+          </div>
+          <div class="form-group">
+            <label for='newPwd1'>Шинэ нууц үгийг бататгах:</label>
+            <input id="newPwd1" type='password' class="form-control">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button on-click="{{ changePwd }}" type="button"
+          class="btn btn-primary" data-dismiss="modal">Солих</button>
+      </div>
+
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>

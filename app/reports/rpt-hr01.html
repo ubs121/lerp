@@ -1,0 +1,105 @@
+<meta charset="utf-8">
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="rpt-hr01" attributes="params rs context">
+<template>
+
+ <core-ajax-dart id="loadCompany"
+    handleAs="json"
+    on-core-response="{{companyResponse}}">
+ </core-ajax-dart>
+
+ <div id="params">
+    Компани:
+   <select value="{{ params['Company'] }}" class="form-controls">
+      <option></option>
+      <option template repeat="{{ o in company }}" value="{{o['_id']}}">{{o['Name']}}</option>
+   </select>
+ </div>
+
+  <header>
+    <h2>Орон тоо</h2>
+  </header>
+
+  <script type="text/javascript" defer runAt="server">
+    function rpt_hr01(params) {
+      db.rpt_hr01.drop();
+
+      db.Job.find(params).forEach( function(d) {
+        var o = {};
+        o.Department = d.Dept || "";
+        o.Job = d.Name || d._id;
+        o.Expected = d.ExpectedEmployees || 0;
+
+        var q = {'Job': d._id, 'Status': {'$ne':'гарсан'}};
+        o.Actual = db.Employee.find(q).count();
+        o.Variance = o.Expected - o.Actual;
+
+        db.rpt_hr01.save(o);
+      });
+
+      return "OK";
+    }
+  </script>
+
+  <section>
+    <table class="table" name="Орон тоо">
+    <thead>
+      <tr>
+        <th>Нэгж</th>
+        <th>Ажлын байр</th>
+        <th>Байвал зохих</th>
+        <th>Бодит</th>
+        <th>Зөрүү (+/-)</th>
+      </tr>
+    </thead>
+    <tbody template repeat="{{ r in rs }}">
+    <!-- group by Company -->
+      <tr>
+        <td>{{ r['Department'] }}</td>
+        <td>{{ r['Job'] }}</td>
+        <td>{{ r['Expected'] }}</td>
+        <td>{{ r['Actual'] }}</td>
+        <td>{{ r['Variance'] }}</td>
+      </tr>
+    </tbody>
+    </table>
+  </section>
+
+  <footer>
+  </footer>
+
+
+</template>
+
+<script>
+  Polymer('rpt-hr01', {
+    publish: {
+      context: null,
+      params: null,
+      rs: null
+    },
+    company: null,
+
+    created: function() {
+      this.params = {};
+      this.company = [];
+      this.rs = [];
+    },
+
+    contextChanged: function() {
+      // компанийн жагсаалт
+      if (this.context) {
+        var ajax = this.$.loadCompany;
+        ajax.headers = { 'Token': this.context['token'] }
+        ajax.url = this.context['serverUrl'] + '/db/find/Company';
+        ajax.go();
+      }
+    },
+
+    companyResponse: function(e, detail, target) {
+      this.company = detailt['response'];
+    }
+  });
+</script>
+</dom-module>

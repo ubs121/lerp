@@ -1,0 +1,74 @@
+<meta charset="utf-8">
+<link rel="import" href="../polymer/polymer.html">
+
+<dom-module id="att-form">
+<template>
+
+  <record-set id="rsEmp" name="Employee"
+    project="['_id', 'Name', 'LastName', 'Job', 'Position', 'Dept']"
+    filter="{'Status': {'$ne':'гарсан'} }"
+    sort="['Name']"
+    limit=0
+    auto>
+  </record-set>
+
+  <x-select label="Ажилтан" value="{{data.current['Employee']}}" type="Map"
+      options="{{ $['rsEmp'].rs }}"
+      editing="{{editing}}"></x-select>
+
+  <x-input label="Огноо" value="{{data.current['Date']}}" type="datetime-local" editing="{{editing}}"></x-input>
+  <!--
+  <x-input label="Цаг" value="{{data.current['Time']}}" type="time" editing="{{editing}}"></x-input>
+  -->
+  <x-select label="Орсон/гарсан" value="{{data.current['Action']}}" options="{{ actionOpts }}" editing="{{editing}}"></x-select>
+  <x-input label="Үйлдлийн тайлбар" value="{{data.current['ActionDesc']}}" editing="{{editing}}"></x-input>
+
+</template>
+
+</dom-module>
+
+
+<dom-module id="leave-form">
+<template>
+
+<form class="form-horizontal" role="form">
+  <template if="{{ !editing }}">
+  <div class="btn-toolbar pull-right">
+
+    <!--<template if="{{ data.current['State'] == 'ноорог' }}">-->
+    <button on-click="{{send}}" class="btn btn-default">Илгээх</button>
+    <!--</template>-->
+
+
+  </div>
+  </template>
+
+
+  <x-select label="Чөлөөний төрөл" value="{{ data.current['Name'] }}" options="{{ typeOpts }}" editing="{{editing}}"></x-select>
+
+  <x-input label="Явах огноо" value="{{ data.current['DateFrom'] }}"
+    type="date" editing="{{editing}}"></x-input>
+  <x-input label="Явах цаг" value="{{ data.current['TimeFrom'] }}"
+    type="time" editing="{{editing}}"></x-input>
+
+  <x-input label="Хугацаа (цагаар)"
+    value="{{ data.current['Duration'] }}"
+    type="number" min="1" editing="{{editing}}"></x-input>
+
+  <x-note label="Шалтгаан" value="{{data.current['Notes']}}" editing="{{editing}}"></x-note>
+
+  <p>{{ data.current['Dept'] }}</p>
+
+  <hr/>
+
+  <x-input label="Төлөв" value="{{ data.current['State'] }}" editing="false"></x-input>
+</form>
+</template>
+
+
+
+
+</dom-module>
+
+
+<script type="application/dart" src="attendance.dart"></script>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+  <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+<h1>Анкет</h1>
+
+<form action="mailto:erel_hr@erel.mn,hr@erel.mn,job@erel.mn?Subject=Application" method="post" enctype="multipart/form-data" class="form-horizontal">
+
+<h2>1.Үндсэн мэдээлэл</h2>
+
+<div style="width: 20%; float: left; border: 1px solid silver">
+  Зураг
+</div>
+
+<div style="width: 70%; float: left; margin-left: 20px;">
+	<div class="form-group">
+    <label for="Name" class="col-sm-2 control-label">Нэр</label>
+    <div class="col-sm-10">
+    	<input class="form-control" id="Name" name="Name">
+    </div>
+	</div>
+	<div class="form-group">
+    <label for="LastName" class="col-sm-2 control-label">Эцгийн нэр</label>
+    <div class="col-sm-10">
+    	<input class="form-control" id="LastName" name="LastName">
+    </div>
+	</div>
+	<div class="form-group">
+    <label for="Age" class="col-sm-2 control-label">Нас</label>
+    <div class="col-sm-10">
+    	<input type="number" class="form-control" id="Age" name="Age">
+    </div>
+	</div>
+	<div class="form-group">
+		<label for="Gender" class="col-sm-2 control-label">Хүйс</label>
+		<div class="col-sm-10">
+			<select class="form-control" id="Gender" name="Gender">
+				<option>эр</option>	
+				<option>эм</option>	
+			</select>
+		</div>
+	</div>
+	<div class="form-group">
+    <label for="_id" class="col-sm-2 control-label">Регистрийн дугаар</label>
+    <div class="col-sm-10">
+    	<input class="form-control" id="_id" name="_id">
+    </div>
+	</div>
+</div>
+
+<div class="form-group">
+    <label for="Goal">Ирээдүйн зорилго</label>
+    <textarea class="form-control" id="Goal" name="Goal"></textarea> 
+</div>
+    
+<div style="clear:left; width: 100%">
+
+</div> 
+
+<h2>2. Ажлын туршлага, ур чадвар</h2>  
+
+  
+<h2>3. Хувийн мэдээлэл</h2>
+
+<div class="form-group">
+    <label for="Birthday">Төрсөн өдөр</label>
+    <input type="date" class="form-control" id="Birthday" name="Birthday">
+</div>
+<div class="form-group">
+    <label for="BirthPlace">Төрсөн газар</label>
+    <input class="form-control" id="BirthPlace" name="BirthPlace">
+</div>
+ 
+<input type="submit" value="Илгээх" class="btn btn-primary">
+<input type="reset" value="Цэвэрлэх" class="btn btn-default">
+
+</form>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

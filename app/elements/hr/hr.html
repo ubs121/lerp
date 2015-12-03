@@ -1,0 +1,320 @@
+<meta charset="utf-8">
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="emp.html">
+<link rel="import" href="training.html">
+<link rel="import" href="eval.html">
+<link rel="import" href="job.html">
+<link rel="import" href="dept.html">
+<link rel="import" href="attendance.html">
+<link rel="import" href="anket.html">
+
+
+<link rel="import" href="report/rpt-hr01.html">
+<link rel="import" href="report/rpt-hr02.html">
+<link rel="import" href="report/rpt-hr03.html">
+<link rel="import" href="report/rpt-hr04.html">
+<link rel="import" href="report/rpt-hr10.html">
+<link rel="import" href="report/rpt-hr11.html">
+<link rel="import" href="report/rpt-hr12.html">
+<link rel="import" href="report/rpt-hr13.html">
+<link rel="import" href="report/rpt-hr20.html">
+
+<link rel="import" href="report/rpt-dev01.html">
+<link rel="import" href="report/rpt-dev02.html">
+
+
+<dom-module id="hr-home">
+<template>
+  <link rel="stylesheet" href="../lerp.css">
+
+
+  <!-- TODO: UserPreference: localstorage-ээс моделын тохиргоог тунших -->
+
+  <record-set id="rsEmp" name="Employee" context="{{context}}"
+    fields="['_id', 'Name', 'LastName', 'FamilyName', 'Gender', 'Job', 'Position', 'Dept', 'Company', 'Type', 'WorkLocation', 'WorkPhone', 'WorkEmail', 'MobilePhone', 'CardNo', 'Coach', 'Casual', 'Status', 'JoinedDate', 'TrialEndDate', 'ResignationDate', 'ResignationReason', 'EvalPlan', 'BankName', 'BankAccount']"
+    project="['_id', 'Name', 'LastName', 'Gender', 'Job', 'Position', 'Dept', 'WorkPhone']"
+    sort="['Dept', 'Name', 'LastName']"
+    filter="{'Status': {'$ne':'гарсан'} }"
+    required="['_id']"
+    labels="{'_id':'Регистр', 'Name':'Нэр', 'LastName': 'Эцгийн нэр'}" >
+  </record-set>
+
+  <record-set id="rsEmpLeft" name="Employee" context="{{context}}"
+    fields="['_id', 'Name', 'LastName', 'FamilyName', 'Gender', 'Job', 'Position', 'Dept', 'Company', 'JoinedDate', 'TrialEndDate', 'ResignationDate', 'ResignationReason']"
+    project="['_id', 'ResignationDate', 'Name', 'LastName', 'Gender', 'Job', 'Position', 'Dept', 'Company']"
+    sort="['-ResignationDate', 'Name', 'LastName']"
+    filter="{'Status': 'гарсан' }"
+    labels="{'_id':'Регистр', 'ResignationDate':'Гарсан огноо', 'Name':'Нэр', 'LastName': 'Эцгийн нэр'}" >
+  </record-set>
+
+  <record-set id="rsApplicant" name="Applicant" context="{{context}}"
+    fields="['_id', 'Date', 'Name', 'LastName', 'Age', 'Gender', 'Job', 'SalaryExpected', 'Probability', 'Stage', 'State', 'Company', 'Phone', 'Email', 'CurrentJob', 'AvailableDate', 'Reference', 'Date', 'DateAction', 'Response', 'Updated']"
+    project="['_id', 'Date', 'Name', 'LastName', 'Age', 'Gender', 'Job', 'SalaryExpected', 'Probability', 'Stage', 'State']"
+    sort="['-Date']"
+    labels="{'_id':'Регистр', 'Date': 'Огноо', 'Name':'Нэр'}" >
+  </record-set>
+
+  <record-set id="rsContract" name="Contract" context="{{context}}"
+    fields="['_id', 'Name', 'Type', 'Date', 'Employee', 'DateStart', 'DateEnd', 'Notes', 'Dept', 'Job', 'Wage', 'FixedAllowances', 'Advantages', 'Reason', 'SalaryProfile', 'SchedulePay']"
+    project="['Name', 'Type', 'Employee.Name', 'DateStart', 'DateEnd', 'Notes']"
+    labels="{'Name':'Дугаар', 'Type':'Төрөл','Employee.Name':'Ажилтан', 'DateStart': 'Эхлэх','DateEnd':'Дуусах', 'Notes':'Нэмэлт'}">
+  </record-set>
+
+  <record-set id="rsTraining" name="Training" context="{{context}}"
+    fields="['_id', 'Name', 'Employee', 'Date', 'Duration', 'Notes']"
+    project="['Name', 'Employee', 'Date', 'Duration', 'Notes']">
+  </record-set>
+
+  <record-set id="rsAppraisal" name="Appraisal" context="{{context}}"
+    fields="['Name', 'Employee', 'Dept', 'Rating', 'Manager', 'Notes', 'State']"
+    project="['Name', 'Employee', 'Dept', 'Rating', 'Manager', 'Notes', 'State']">
+  </record-set>
+
+  <record-set id="rsAttendance" name="Attendance" context="{{context}}"
+    fields="['Date', 'Employee', 'EnrollNumber', 'Action']"
+    project="['Date', 'Employee', 'EnrollNumber', 'Action']"
+    sort="['-Date', 'Employee']"
+    filter="{{last2month}}">
+  </record-set>
+
+  <record-set id="rsLeave" name="Leave" context="{{context}}"
+    fields="['Name', 'Type', 'Employee', 'DateFrom', 'TimeFrom', 'Duration', 'State']"
+    project="['Name', 'Type', 'Employee', 'DateFrom', 'TimeFrom', 'Duration', 'State']">
+  </record-set>
+
+  <record-set id="rsJob" name="Job" context="{{context}}"
+    fields="['_id', 'Name', 'Class', 'ExpectedEmployees', 'State', 'Description', 'Requirements', 'Dept', 'Company']"
+    project="['_id', 'Name', 'Class', 'ExpectedEmployees', 'State']">
+  </record-set>
+
+  <record-set id="rsDept" name="Dept" context="{{context}}"
+    fields="['_id', 'Name', 'Parent', 'Manager', 'Company', 'FullName']"
+    project="['_id', 'Name', 'Parent', 'Manager', 'Company']">
+  </record-set>
+
+  <record-set id="rsPersonal" name="Personal" context="{{context}}"
+    fields="['_id', 'Name', 'LastName', 'Goal', 'Interest', 'Behavior', 'Birthday', 'BirthPlace', 'Nationality', 'Marital', 'Children', 'HomePhone', 'Email', 'BloodType', 'Height', 'Weight', 'HomeAddress']"
+    project="['_id', 'Name', 'LastName', 'Birthday', 'BirthPlace', 'Nationality', 'Marital', 'Children']" >
+  </record-set>
+
+  <record-set id="rsCareer" name="Career" context="{{context}}"
+    fields="['_id', 'Name', 'LastName', 'WorkingYear', 'WorkHistory.Org', 'WorkHistory.Position', 'WorkHistory.JoinedDate', 'WorkHistory.LeaveDate', 'Education.School', 'Education.GraduatedYear','Education.GPA', 'Education.Profession', 'Skills.Skill', 'Rewards.Name', 'Rewards.Date']"
+    project="['_id', 'Name', 'LastName', 'WorkingYear', 'WorkHistory.Org', 'Education.Profession', 'Education.School', 'Skills.Skill']">
+  </record-set>
+
+
+  <!-- left panel -->
+  <nav class="col-md-2 lerp-menu" placeholder="content">
+    <h2>Хүний нөөц</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li class="{{ {'active': page=='' || page=='#/emp'} }}">
+        <a href="#/emp" on-click="{{route}}">Ажилтнууд</a>
+      </li>
+      <li class="{{ {'active': page=='#/personal'} }}">
+        <a href="#/personal" on-click="{{route}}">Хувийн мэдээлэл</a>
+      </li>
+      <li class="{{ {'active': page=='#/career'} }}">
+        <a href="#/career" on-click="{{route}}">Ажлын туршлага</a>
+      </li>
+
+      <li class="{{ {'active': page=='#/contract'} }}">
+        <a href="#/contract" on-click="{{route}}">Гэрээ</a>
+      </li>
+
+      <!-- эрх бүхий хүмүүс харна -->
+      <template if="{{ hasRole }}">
+      <li class="{{ {'active': page=='#/applicant'} }}">
+        <a href="#/applicant" on-click="{{route}}">Ажил горилогч</a>
+      </li>
+
+      <li class="{{ {'active': page=='#/emp_left'} }}">
+        <a href="#/emp_left" on-click="{{route}}">Гарсан ажилтнууд</a>
+      </li>
+      </template>
+    </ul>
+
+    <h2>Цаг бүртгэл</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li class="{{ {'active': page=='#/leave'} }}">
+        <a href="#/leave" on-click="{{route}}">Амралт,чөлөө</a>
+      </li>
+      <li class="{{ {'active': page=='#/att'} }}">
+        <a href="#/att" on-click="{{route}}">Ирц</a>
+      </li>
+    </ul>
+
+
+    <h2>Сургалт, хөгжил</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li class="{{ {'active': page=='#/eval'} }}">
+        <a href="#/eval" on-click="{{route}}">Үнэлгээ</a>
+      </li>
+      <li class="{{ {'active': page=='#/training'} }}">
+        <a href="#/training" on-click="{{route}}">Сургалт</a>
+      </li>
+    </ul>
+    <!--
+    <h2>Тайлан</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li class="{{ {'active': page=='#/report'} }}">
+        <a href="#/report" on-click="{{route}}">Тайлан</a>
+      </li>
+    </ul>
+    -->
+
+    <!-- TODO: тайлангуудыг report/report.json файлаас унших -->
+
+    <h2>Тохиргоо</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li class="{{ {'active': page=='#/dept'} }}">
+        <a href="#/dept" on-click="{{route}}">Нэгж</a>
+      </li>
+      <li class="{{ {'active': page=='#/job'} }}">
+        <a href="#/job" on-click="{{route}}">Ажлын байр</a>
+      </li>
+    </ul>
+  </nav>
+
+
+  <section id="content" class="col-md-10">
+
+    <template if="{{page=='' || page=='#/emp'}}">
+       <view-mgr model='Employee'
+          currentView='kanban'
+          form='emp-form'
+          kanban='emp-kanban'
+          list='x-list'
+          data="{{ $['rsEmp'] }}">
+
+       </view-mgr>
+    </template>
+
+    <template if="{{page=='#/applicant'}}">
+       <view-mgr model='Applicant'
+          currentView='list'
+          form='applicant-form'
+          kanban='applicant-kanban'
+          list='x-list'
+          chart='applicant-chart'
+          data="{{ $['rsApplicant'] }}">
+       </view-mgr>
+    </template>
+
+    <template if="{{page=='#/personal'}}">
+       <view-mgr model='Personal'
+          currentView='list'
+          form='person-personal'
+          list='x-list'
+          data="{{ $['rsPersonal'] ]}}">
+
+       </view-mgr>
+    </template>
+
+    <template if="{{page=='#/career'}}">
+       <view-mgr model='Career'
+          currentView='list'
+          form='person-career'
+          list='x-list'
+          data="{{ $['rsCareer'] }}">
+
+       </view-mgr>
+    </template>
+
+    <template if="{{page=='#/emp_left'}}">
+       <view-mgr model='Employee'
+          currentView='list'
+          form='emp-form'
+          kanban='emp-kanban'
+          list='x-list'
+          data="{{ $['rsEmpLeft'] }}">
+
+       </view-mgr>
+    </template>
+
+    <template if="{{page=='#/contract'}}">
+       <view-mgr model='Contract'
+          currentView='list'
+          form='emp-contract'
+          list='x-list'
+          data="{{ $['rsContract'] }}">
+       </view-mgr>
+    </template>
+
+    <template if="{{page=='#/eval'}}">
+       <view-mgr model='Appraisal'
+          currentView='list'
+          form='eval-form'
+          list='x-list'
+          data="{{ $['rsAppraisal'] }}">
+       </view-mgr>
+    </template>
+
+    <template if="{{page=='#/att'}}">
+       <view-mgr model='Attendance'
+          currentView='list'
+          form='att-form'
+          list='x-list'
+          data="{{ $['rsAttendance'] }}">
+       </view-mgr>
+    </template>
+
+    <template if="{{page=='#/leave'}}">
+       <view-mgr model='Leave'
+          currentView='list'
+          form='leave-form'
+          list='x-list'
+          data="{{ $['rsLeave'] }}">
+       </view-mgr>
+    </template>
+
+    <template if="{{page=='#/training'}}">
+       <view-mgr model='Training'
+          currentView='list'
+          form='emp-training'
+          list='x-list'
+          data="{{ $['rsTraining'] }}">
+       </view-mgr>
+    </template>
+
+    <template if="{{page=='#/job'}}">
+     <view-mgr model='Job'
+        currentView='list'
+        form='hr-job'
+        list='x-list'
+        data="{{ $['rsJob'] }}">
+     </view-mgr>
+    </template>
+
+    <template if="{{page=='#/dept'}}">
+     <view-mgr model='Dept'
+        currentView='list'
+        form='hr-dept'
+        list='x-list'
+        chart='dept-chart'
+        data="{{ $['rsDept'] }}">
+     </view-mgr>
+    </template>
+
+    <template if="{{page=='#/report'}}">
+      <report-viewer context="{{context}}"
+        reports="['rpt-hr01',
+                  'rpt-hr02',
+                  'rpt-hr03',
+                  'rpt-hr04',
+                  'rpt-hr10',
+                  'rpt-hr11',
+                  'rpt-hr12',
+                  'rpt-hr13',
+                  'rpt-hr20',
+                  'rpt-dev01',
+                  'rpt-dev02']">
+      </report-viewer>
+    </template>
+
+  </section>
+
+</template>
+
+<script type="application/dart" src="hr.dart"></script>
+
+</dom-module>

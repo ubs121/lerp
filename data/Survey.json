@@ -1,0 +1,82 @@
+[
+  {
+    "_id": "empo",
+    "Name": "Ажилчдын санаа бодол",
+    "Type": "Human Resources",
+    "State": "open",
+    "ResponseUser": 5,
+    "MaxResponseLimit": 20,
+    "DateOpen": "2013-10-01",
+    "DateClose": "2013-12-31",
+    "Notes": "Ажилчдын санал бодлыг тандах асуулга",
+    "Questions": [
+      {
+        "_id": 1,
+        "Sequence": 1,
+        "Question": "Би энд ажилладаг гэдгээ итгэл төгс бусдад хэлнэ",
+        "Answers": [
+          "тийм",
+          "үгүй"
+        ],
+        "AnswerType": "m2o"
+      },
+      {
+        "_id": 2,
+        "Sequence": 2,
+        "Question": "Өөр компани ойролцоо ажлын байр санал болгосон ч би эндээ үлдэнэ",
+        "Answers": [
+          "тийм",
+          "үгүй"
+        ],
+        "AnswerType": "m2o"
+      },
+      {
+        "_id": 3,
+        "Sequence": 3,
+        "Question": "Одоогийн ажилдаа хэр сэтгэл хангалуун байдаг вэ",
+        "Answers": [
+          "огтхон ч үгүй",
+          "бага зэрэг",
+          "дунд зэрэг",
+          "сэтгэл хангалуун байдаг",
+          "маш их"
+        ],
+        "AnswerType": "m2o"
+      },
+      {
+        "_id": 4,
+        "Sequence": 4,
+        "Question": "Би үр дүнтэй ажиллаж чаддаг",
+        "Answers": [
+          "тийм",
+          "үгүй"
+        ],
+        "AnswerType": "m2o"
+      },
+      {
+        "_id": 5,
+        "Sequence": 5,
+        "Question": "Надад хангалттай их ажил бий",
+        "Answers": [
+          "тийм",
+          "үгүй"
+        ],
+        "AnswerType": "m2o"
+      },
+      {
+        "_id": 6,
+        "Sequence": 6,
+        "Question": "Манай компанийн үйлчилгээ, бүтээгдэхүүний чанар сайжирч байгаа",
+        "Answers": [],
+        "AnswerType": "rating"
+      },
+      {
+        "_id": 7,
+        "Sequence": 7,
+        "Question": "Компанид хэлэх санал, сэтгэгдэл",
+        "Answers": [],
+        "AnswerType": "fill"
+      }
+    ]
+  }
+]

@@ -1,0 +1,146 @@
+[
+{ 	"_id": "holding", 
+	"Name": "Толгой компанийн ажилтан",
+   	"Permission": [
+		"Post", "PlusGroup", "Event", "Survey",
+		"Employee", "Contract", "Job", "Dept", "Applicant", "Personal", "Career",
+		"Attendance", "Leave", "Appraisal", "Training",
+		"File", "Page",
+		"Report",
+		"User",
+		
+		"Post+", "PlusGroup+", "Event+", "Survey+",
+		"Employee+", "Contract+", "Job+", "Dept+", "Applicant+", "Personal+", "Career+",
+		"Leave+", "Appraisal+","Training+","Attendance+",
+		"File+", "Page+",
+		
+		"Post-", "PlusGroup-", "Event-", "Survey-",
+		"Employee-", "Contract-", "Job-", "Dept-", "Applicant-", "Personal-", "Career-",
+		"Leave-", "Appraisal-", "Training-","Attendance-",
+		"File-", "Page-"]
+}, 
+{ 	"_id": "mgr", 
+	"Name": "Удирдлага",
+  	"Permission": [
+		"Post", "PlusGroup", "Event", "Survey",
+		"Employee", "Contract", "Job", "Dept", "Applicant", "Career",
+		"Attendance", "Leave", "Appraisal","Training",
+		"File", "Page",
+		"Report",
+		"User",
+		
+		
+		"Post+", "PlusGroup+", "Event+", "Survey+",
+		"Attendance+","Leave+", "Appraisal+",
+		"File+", "Page+",
+		
+		"Post-", "PlusGroup-", "Event-", "Survey-",
+		"Attendance-","Leave-", "Appraisal-",
+		"File-", "Page-"
+		]
+},
+{	"_id": "hr", 
+	"Name": "Хүний нөөцийн ажилтан",
+	"Permission": [
+		"Post", "PlusGroup", "Event", "Survey",
+		"Employee", "Contract", "Job", "Dept", "Applicant", "Personal", "Career",
+		"Attendance", "Leave", "Appraisal", "Training",
+		"File", "Page",
+		"Report",
+		"User",
+		
+		"Post+", "PlusGroup+", "Event+", "Survey+",
+		"Employee+", "Contract+", "Job+", "Dept+", "Applicant+", "Personal+", "Career+",
+		"Leave+", "Appraisal+", "Training+",
+		"File+", "Page+",
+		
+		"Post-", "PlusGroup-", "Event-", "Survey-",
+		"Employee-", "Contract-", "Job-", "Dept-", "Applicant-", "Personal-", "Career-",
+		"Leave-", "Appraisal", "Training-",
+		"File-", "Page-"
+	]
+},
+{	"_id": "hr.1", 
+	"Name": "Хүний нөөцийн ажилтан",
+	"Permission": [
+		"Post", "PlusGroup", "Event", "Survey",
+		"Employee", "Contract", "Job", "Dept", "Applicant", "Personal", "Career",
+		"Attendance", "Leave", "Appraisal", "Training",
+		"File", "Page",
+		"Report",
+		"User",
+		
+		"Post+", "PlusGroup+", "Event+", "Survey+",
+		"Employee+", "Contract+", "Job+", "Dept+", "Applicant+", "Personal+", "Career+",
+		"Leave+", "Appraisal+", "Training+",
+		"File+", "Page+",
+		
+		"Post-", "PlusGroup-", "Event-", "Survey-",
+		"Employee-", "Contract-", "Job-", "Dept-", "Applicant-", "Personal-", "Career-",
+		"Leave-", "Appraisal", "Training-",
+		"File-", "Page-"
+	]
+},
+{	"_id": "employee", 
+	"Name": "Ажилтан", 
+	"Permission": [
+		"Post", "PlusGroup", "Event", "Survey",
+		"Employee", "Contract", "Job", "Dept", "Applicant", "Personal", "Career",
+		"Attendance", "Leave", "Appraisal", "Training",
+		"File", "Page",
+		
+		"Post+", "PlusGroup+",
+		"Personal+", "Career+",
+		"Leave+",
+		
+		"Post-", "PlusGroup-",
+		"Leave-"
+	]
+},
+{ 
+	"_id": "admin", 
+	"Name": "Админ",
+   	"Permission": [
+		"Post", "PlusGroup", "Event", "Survey",
+		"Employee", "Job", "Dept",
+		"Attendance",
+		"File", "Page",
+		"Report",
+		"User", "Company",
+		
+		"Post+", "PlusGroup+", "Event+",
+		"Attendance+",
+		"File+", "Page+",
+		"Report+",
+		"User+", "Company+",
+		
+		"Post-", "PlusGroup-", "Event-",
+		"Attendance-",
+		"File-", "Page-",
+		"Report-",
+		"User-", "Company-"
+	]
+},
+{ 
+	"_id": "system", 
+	"Name": "Систем",
+   	"Permission": [
+		"Post", "PlusGroup", "Event", "Survey",
+		"Employee", "Contract", "Job", "Dept", "Applicant", "Personal", "Career",
+		"Attendance", "Leave", "Appraisal", "Training",
+		"File", "Page",
+		"Report",
+		"User",
+		
+		"Post+", "PlusGroup+", "Event+", "Survey+",
+		"Employee+", "Contract+", "Job+", "Dept+", "Applicant+", "Personal+", "Career+",
+		"Leave+", "Appraisal+","Training+","Attendance+",
+		"File+", "Page+",
+		
+		"Post-", "PlusGroup-", "Event-", "Survey-",
+		"Employee-", "Contract-", "Job-", "Dept-", "Applicant-", "Personal-", "Career-",
+		"Leave-", "Appraisal-", "Training-","Attendance-",
+		"File-", "Page-"
+	]
+}
+]

@@ -1,0 +1,82 @@
+<meta charset="utf-8">
+
+<link rel="import" href="../polymer/polymer.html">
+
+<!-- баримт засах дэлгэц -->
+<dom-module id="book-edit">
+<template>
+
+
+<h3>Тун удахгүй ном зохиох, засах боломжтой болно!</h3>
+
+
+
+</template>
+
+<script>
+/**
+ * ном засах дэлгэц
+ *
+ * @see https://www.gitbook.com/book/ubs121/web-art/edit
+ * @see polymer-н markdown editor-г ашиглах
+ */
+@CustomTag("book-edit")
+class BookEdit extends PolymerElement {
+  @published
+  UserContext context;
+
+  @published
+  String bookId;
+
+  @published
+  String hash = "";
+
+  @observable
+  Map book;
+
+  @observable
+  List pages;
+
+  BookEdit.created() : super.created() {
+    if (hash == "") {
+      hash = window.location.hash;
+    }
+  }
+
+  hashChanged() {
+    bookId = Uri.decodeFull(hash.substring("#/edit/".length));
+  }
+
+  bookIdChanged() {
+    getBookInfo();
+  }
+
+  getBookInfo() {
+    if (context == null) {
+      return;
+    }
+
+    context.send("db.findOne", ["Ном", {
+        "_id": bookId
+      }]).then((resp) {
+      book = toObservable( firstNonNull(resp, {}));
+
+      // хуудсуудыг тохируулах
+      pages = toObservable( firstNonNull(book['агуулга'], []) );
+    }).catchError((e) {
+
+    });
+  }
+
+
+  String pageUrl(String path) {
+    return "${context.bookServer}/${book['байрлал']}/${path}";
+  }
+
+  String audioType(String file) {
+    return "audio/mpeg";
+  }
+}
+</script>
+
+</dom-module>

@@ -1,0 +1,89 @@
+<meta charset="utf-8">
+
+<link rel="import" href="../polymer/polymer.html">
+
+<!-- ном бүртгэх форм -->
+<dom-module id="doc-form">
+
+<style>
+  :host { width: 100%; }
+  .column {
+    margin: 20px;
+  }
+</style>
+
+<template>
+<div layout horizontal>
+
+  <template is="dom-if" value="{{ !nocover }}">
+    <div flex class="column">
+      <x-file label="Зураг" type="image" value="{{data.image}}" editing="{{editing}}"></x-file>
+    </div >
+  </template>
+
+  <div flex class="column">
+   <paper-input label="Нэр" value="{{data.name}}" editing="{{editing}}" required></paper-input>
+   <paper-input label="Код/ISBN" value="{{data.id}}" editing="{{editing}}" required></paper-input>
+
+   <x-select label="Формат" value="{{data.format}}"
+    options="['markdown','pdf','html','epub','audio','image','mobi']"
+    editing="{{editing}}" >
+   </x-select>
+
+   <paper-input label="Хуудасны тоо" value="{{data.pageCount}}" type="number" editing="{{editing}}"></paper-input>
+   <paper-input label="Огноо" value="{{data.date}}" editing="{{editing}}"></paper-input>
+   <paper-input label="Хувилбар" value="{{data.version}}" editing="{{editing}}"></paper-input>
+   <paper-input label="Зохиогч" value="{{data.author]}}" editing="{{editing}}"></paper-input>
+
+   <x-select label="Хэл" value="{{data.lang}}" editing="{{editing}}"
+      options="['монгол','англи','орос','япон','хятад','франц','герман']">
+   </x-select>
+
+   <paper-input label="Байрлал" value="{{data.location}}" editing="{{editing}}"></paper-input>
+
+  </div>
+
+  <div flex class="column">
+   <x-select label="Ангилал" value="{{data.category}}"
+    options="{{categories}}" editing="{{editing}}">
+   </x-select>
+   <x-note label="Тухай" value="{{ data.notes }}" editing="{{editing}}"></x-note>
+   <list-input label="Түлхүүр үгс" value="{{ data.tags }}" editing="{{editing}}"></list-input>
+   <x-ratings label="Үнэлгээ" value="{{data.rating}}" editing="{{editing}}"></x-ratings>
+  </div>
+
+
+  <div>
+      <!--TODO: номыг zip байдлаар импортлох -->
+  </div>
+</div>
+
+</template>
+
+<script>
+'use strict';
+
+class DocForm {
+  List categories;
+
+  beforeRegister() {
+    this.is = "doc-form";
+    this.properties: {
+      data: Object,
+      editing: Boolean,
+      nocover: Boolean,
+    }
+  }
+
+  doImport(e, detail, target) {
+    // TODO: Book import as *.zip format
+  }
+
+  doExport(e, detail, target) {
+    // TODO: Markdown book export: pdf, html, ...
+  }
+
+}
+Polymer(DocForm);
+</script>
+</dom-module>

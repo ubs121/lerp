@@ -1,0 +1,12 @@
+[
+{
+ "_id": "ubs121",
+ "Interest": "Мэдээллийн технологи",
+ "Marital": "Гэрлэсэн",
+ "Children": 3,
+ "Family": [
+ 	{"Name":"Солонго", "Relation": "Охин"},
+ 	{"Name":"Наранзул", "Relation": "Охин"},
+ 	{"Name":"Аззаяа", "Relation": "Охин"}]
+}
+]

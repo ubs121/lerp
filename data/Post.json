@@ -1,0 +1,123 @@
+[
+
+	{
+		"_id":"post1", 
+		"Date": "2013-10-20",
+		"To": ["public"],
+		"Name": "Чухал мэдээ",
+		"Attachment":"post1.png",
+		"Likes": [{"User": "ubs121", "Date": "2013-10-21"},
+		           {"User": "admin", "Date": "2013-10-22"}],
+		"Commentable": true,
+		"Comments": [{"User": "ubs121", "Date": "2013-10-21", "Text": "hello"},
+		              {"User": "admin", "Date": "2013-10-21", "Text": "hi"}],
+		"Size": "том",
+		"User": "ubs121"
+	},
+	{
+		"_id":"post2", 
+		"Date":"2013-10-11",
+		"To":["public"],
+		"Name": "Эрүүл мэнд",
+		"Text": "Healthy tip of the day: Craving a burger? Make it at home and control what you put in your body! I made these with 100% organic, grass-fed beef and skipped all the condiments (which are full of bad fats and sodium) by making my own roasted tomato sauce and adding some high-quality blue cheese (Roquefort). Tested a pretzel bun today from a local company and it was delicious! Feel free to use whole-wheat buns (or skip them altogether for a carb-free meal!)",
+		"Likes": [{"User": "ubs121", "Date": "2013-10-12"},
+		           {"User": "admin", "Date": "2013-10-14"}],
+		"Commentable": true,
+		"Comments": [{"User": "ubs121", "Date": "2013-10-15", "Text": "hello"},
+		              {"User": "admin", "Date": "2013-10-15", "Text": "hi"}],
+		"User": "admin"
+		
+	},
+	{
+		"_id":"post3",
+		"To":["hr"],
+		"Date":"2013-10-12",
+		"Name":"HR Мэдээ", 
+		"Text": "Ажилтны цол тогтоох шалгалт болно",
+		"Commentable": true,
+		"User": "ubs121"
+	},
+	{
+		"_id":"post4", 
+		"Type":"survey",
+		"To":["public"],
+		"Date":"2013-10-10",
+		"Name":"Санал асуулга", 
+		"Text": "Та энэ санал асуулгад оролцоно уу?",
+		"Survey": {
+			"_id":"empo", "Name": "Ажилчдын санаа бодол"
+		},
+		"Commentable": false,
+		"User": "ubs121"
+	},
+	{
+		"_id":"post5",
+		"Date":"2013-10-08",
+		"To": ["car"],
+		"Name":"Зурагтай мэдээ: Машин",
+		"Attachment":"post5.gif",
+		"User": "admin"
+	},
+	{
+		"_id":"post6",
+		"Date":"2013-10-08",
+		"Type":"greeting",
+		"To": ["public"],
+		"Name":"Мэндчилгээ",
+		"Text":"Цэцгээдээ төрсөн өдрийн мэнд хүргэе!",
+		"Attachment":"post6.jpg",
+		"Commentable": true,
+		"Comments": [{"User": "ubs121", "Date": "2013-10-08", "Text": "Баяр хүргэе!"},
+		              {"User": "admin", "Date": "2012-10-09", "Text": "Төрсөн өдрийн мэнд"}],
+		"User": "ubs121"
+		
+	},
+	{
+		"_id":"post7",
+		"Date":"2013-10-02",
+		"Type":"event",
+		"To":["hr"],
+		"Name":"Lerp сургалт болно",
+		"Text":"Оролцох уу?",
+		"Commentable": true,
+		"User": "ubs121",
+
+		"Event" : {
+ 			 "Name" : "Lerp сургалт", "Type" : "training", "_id" : "lerp", "DateEnd" : "2013-12-01", "DateStart" : "2013-12-01", "MainSpeaker" : "Ууганбаяр.C" 
+		}
+	},
+	{
+		"_id":"post8",
+		"Date":"2013-10-08",
+		"To": ["entertainment"],
+		"Name":"Видео мэдээ",
+		"Attachment":"http://video-js.zencoder.com/oceans-clip.webm",
+		"Commentable": true,
+		"User": "admin"
+	},
+	{
+		"_id":"idea1",
+		"Date":"2013-10-08",
+		"Type": "idea",
+		"To": ["kaizen"],
+		"Name":"Шинэ санаа: Том ажлыг дуусгах арга",
+		"Text": "Бага багаар ахих",
+		"Attachment":"idea1.jpg",
+		"Commentable": true,
+		"Comments": [{"User": "ubs121", "Date": "2013-10-08", "Text": "Гоё санаа байна!"},
+		              {"User": "admin", "Date": "2012-10-09", "Text": "Cool"}],
+		"User": "admin"
+	},
+	{
+		"_id":"idea2",
+		"Date":"2013-10-08",
+		"Type": "idea",
+		"To": ["kaizen"],
+		"Name":"Зардал хэмнэх",
+		"Text": "цаасны зардал хэмнэх",
+		"Commentable": true,
+		"Comments": [{"User": "ubs121", "Date": "2013-10-08", "Text": "Гоё санаа байна!"}],
+		"User": "admin"
+	}
+	
+]

@@ -1,0 +1,45 @@
+<meta charset="utf-8">
+<link rel="import" href="../polymer/polymer.html">
+
+<dom-module id="eval-form">
+<template>
+
+  <record-set id="optEmp" name="Employee" auto=true
+      project="['_id', 'Name']"
+      sort="['Name']"
+      limit=0>
+  </record-set>
+
+  <form class="form-horizontal">
+     <x-select label="Ажилтан" value="{{data.current['Employee']}}" type="Map"
+      options="{{ $['optEmp'].rs }}" editing="{{editing}}"></x-select>
+
+     <x-select label="Үнэлгээ" value="{{data.current['Rating']}}"
+      editing="{{editing}}"
+      options="['A-Маш сайн','B-Тогтмол хангалттай','C-Хангалттай','D-Тааруу','E-Хангалтгүй']">
+     </x-select>
+
+     <hr/>
+     <x-input label="Огноо" type="date" value="{{data.current['Name']}}" editing="{{editing}}"></x-input>
+
+     <x-note label="Тэмдэглэл" value="{{data.current['Notes']}}" editing="{{editing}}"></x-note>
+  </form>
+</template>
+
+<script>
+    'use strict';
+    class EvalForm {
+      beforeRegister() {
+        this.is = "eval-form";
+      }
+    }
+    Polymer(EvalForm);
+</script>
+</dom-module>
+
+
+<dom-module id="eval-plan">
+<template>
+</template>
+
+</dom-module>

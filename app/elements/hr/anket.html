@@ -1,0 +1,276 @@
+<meta charset="utf-8">
+
+<link rel="import" href="../polymer/polymer.html">
+
+
+<dom-module id="applicant-form">
+<template>
+  <link rel="stylesheet" href="packages/bootstrap_for_pub/css/bootstrap.min.css">
+
+  <record-set id="rsCompany" name="Company" auto
+      context="{{data.context}}"
+      project="['_id', 'Name']">
+  </record-set>
+
+  <!-- хувийн мэдээлэл -->
+  <record-set id="rsPersonal" name="Personal" auto
+    context="{{data.context}}"
+    parent="{{data}}"
+    link="{'parent': '_id', 'child':'_id'}">
+  </record-set>
+
+  <!-- карер мэдээлэл -->
+  <record-set id="rsCareer" name="Career" auto
+    context="{{data.context}}"
+    parent="{{data}}"
+    link="{'parent': '_id', 'child':'_id'}">
+  </record-set>
+
+<style>
+ h2 {
+  border-bottom: 1px solid silver;
+ }
+</style>
+<form class="form-horizontal">
+
+  <h2>1.ҮНДСЭН МЭДЭЭЛЭЛ</h2>
+
+  <div style="width: 20%; float: left;">
+    <x-file value="{{data.current['Photo']}}"
+      context="{{data.context}}"
+      editing="{{editing}}"
+      style="height: 120px;"></x-file>
+  </div>
+
+  <div style="width: 70%; float: left; margin-left: 20px;">
+    <x-input label="Нэр" value="{{ data.current['Name'] }}" editing="{{editing}}"></x-input>
+    <x-input label="Эцгийн нэр" value="{{ data.current['LastName'] }}"  editing="{{editing}}"></x-input>
+    <x-input label="Ургийн овог" value="{{ data.current['FamilyName'] }}"  editing="{{editing}}"></x-input>
+    <x-input label="Региcтр" value="{{ data.current['_id'] }}" editing="{{editing}}"></x-input>
+    <x-select label="Хүйс" value="{{ data.current['Gender'] }}"
+      options="['эр', 'эм']"
+      editing="{{editing}}"></x-select>
+
+    <x-input label="Холбоо барих" value="{{ data.current['Phone'] }}" editing="{{editing}}"></x-input>
+  </div>
+
+  <div style="clear:left; width: 50%">
+    <x-input label="Хүссэн цалин" value="{{ data.current['SalaryExpected'] }}" editing="{{editing}}"></x-input>
+    <x-input label="Боломжтой огноо" type="date" value="{{ data.current['AvailableDate'] }}" editing="{{editing}}"></x-input>
+    <x-input label="Одоогийн ажил" type="date" value="{{ data.current['CurrentJob'] }}" editing="{{editing}}"></x-input>
+  </div>
+
+  <div style="clear:left; width: 50%">
+    <x-note label="Ирээдүйн зорилго" value="{{ data.current['Goal'] }}" editing="{{editing}}"></x-note>
+
+  </div>
+
+
+  <h2>2. Ажлын туршлага, ур чадвар</h2>
+  <person-career data="{{ $['rsCareer'] }}" editing="{{editing}}"></person-career>
+
+  <h2>3. Хувийн мэдээлэл</h2>
+  <person-personal data="{{ $['rsPersonal'] }}" editing="{{editing}}"></person-personal>
+
+
+  <hr/>
+
+
+  <x-select label="Сонирхож байгаа компани"
+        value="{{data.current['Company']}}"
+        options="{{ $['rsCompany'].rs }}"
+        editing="{{editing}}">
+  </x-select>
+
+  <x-select label="Явц" value="{{ data.current['Stage'] }}"
+      options="['анкет', 'ярилцлага1', 'ярилцлага2', 'захирал']"
+      editing="{{editing}}"></x-select>
+
+  <x-select label="Төлөв" value="{{ data.current['State'] }}"
+    options="['шинэ', 'татгалзсан', 'судалж байгаа', 'ажилд орсон']"
+    editing="{{editing}}"></x-select>
+
+  <template if="{{ data.current['State'] == 'татгалзсан' }}">
+    <x-note label="Өгсөн хариу" value="{{ data.current['Response'] }}" editing="{{editing}}"></x-note>
+  </template>
+
+  <x-select label="Сонгогдох магадлал" value="{{ data.current['Probability'] }}"
+    options="['муу', 'бага', 'дунд', 'сайн', 'маш сайн']"
+    editing="{{editing}}"></x-select>
+
+  <x-input label="Өөрчлөлт орсон огноо" type="date" value="{{ data.current['Date'] }}" editing="{{editing}}"></x-input>
+
+  <x-select label="Мэдээллийн эх сурвалж"
+    value="{{ data.current['Source'] }}"
+    options="['Сонин', 'Зурагт', 'Интернэт', 'Бусад']"
+    editing="{{editing}}"></x-select>
+</form>
+</template>
+
+</dom-module>
+
+
+<!-- Хувийн мэдээлэл -->
+<dom-module id="person-personal">
+<template>
+
+<form class="form-horizontal">
+
+  <div style="width:50%; float:left">
+    <template if="{{ !embedded }}">
+      <x-input label="Регистр" value="{{data.current['_id']}}" required="true" editing="{{editing}}"></x-input>
+    </template>
+
+
+    <x-input label="Төрсөн өдөр" value="{{data.current['Birthday']}}" type="date" editing="{{editing}}"></x-input>
+    <x-input label="Нас" value="{{data.current['Age']}}" type="number" editing="false"></x-input>
+    <x-input label="Төрсөн газар" value="{{data.current['BirthPlace']}}" editing="{{editing}}"></x-input>
+  </div>
+
+  <!-- хаяг, холбоо барих -->
+  <div style="width:50%; float:left">
+    <x-input label="Гэрийн хаяг" value="{{data.current['HomeAddress']}}" editing="{{editing}}"></x-input>
+    <x-input label="Хувийн утас" value="{{data.current['HomePhone']}}" editing="{{editing}}"></x-input>
+  </div>
+
+  <div style="width:100%">
+    <x-note label="Сонирхол" value="{{data.current['Interest']}}" editing="{{editing}}"></x-note>
+    <x-note label="Зан байдал" value="{{data.current['Behavior']}}" editing="{{editing}}"></x-note>
+
+    <x-file label="Зан байдал (Хавсралт)"
+          context="{{data.context}}"
+          value="{{data.current['Attachment']}}"
+          editing="{{editing}}"></x-file>
+  </div>
+
+  <div style="width:100%">
+    <!-- гэр бүл  -->
+    <x-select label="Гэрлэлт"
+       value="{{data.current['Marital']}}"
+       options="['Ганц бие', 'Гэрлэсэн', 'Салсан', 'Бэлэвсэн']"
+       editing="{{editing}}">
+    </x-select>
+    <x-input label="Хүүхдийн тоо" value="{{data.current['Children']}}" editing="{{editing}}"></x-input>
+    <x-table label="Гэр бүлийн гишүүд"
+      rs="{{data.current['Family']}}"
+      columns="
+      {
+        'Name': 'нэр',
+        'Relation': [
+            { '_id': 'Эцэг'},
+            { '_id': 'Эх'},
+            { '_id': 'Ах'},
+            { '_id': 'Эгч'},
+            { '_id': 'Дүү'},
+            { '_id': 'Өвөө'},
+            { '_id': 'Эмээ'},
+            { '_id': 'Нөхөр'},
+            { '_id': 'Эхнэр'},
+            { '_id': 'Хүү'},
+            { '_id': 'Охин'},
+            { '_id': 'Хамаатан'},
+            { '_id': 'Бусад'}
+            ],
+        'BirthYear': 'төрсөн огноо',
+        'Phone': 'гар утас'
+      }
+      "
+      editing="{{editing}}"></x-table>
+
+    <x-note label="Тэмдэглэл" value="{{data.current['Notes']}}" editing="{{editing}}"></x-note>
+  </div>
+</form>
+</template>
+
+
+</dom-module>
+
+
+<!-- Кареер мэдээлэл -->
+<dom-module id="person-career">
+<template>
+
+  <template if="{{ !embedded }}">
+      <x-input label="Регистр" value="{{data.current['_id']}}" required="true" editing="{{editing}}"></x-input>
+  </template>
+
+  <x-input label="Ажилласан жил" value="{{data.current['WorkingYear']}}" editing="{{editing}}"></x-input>
+
+  <x-table label="Ажлын туршлага" id="work"
+    rs="{{ data.current['WorkHistory'] }}"
+    columns="{
+          'Org': 'Байгууллага',
+          'JoinedDate': 'Орсон огноо',
+          'Position': 'Албан тушаал',
+          'LeaveDate': 'Гарсан огноо',
+          'Contact': 'Холбоо барих',
+          'Notes': ''
+        }"
+    editing="{{editing}}"></x-table>
+
+  <x-table label="Боловсрол" id="edu"
+    rs="{{ data.current['Education'] }}"
+    columns="
+    {
+      'School': 'Сургууль',
+      'Duration': 4,
+      'Profession': 'Мэргэжил',
+      'GPA': 1.0,
+      'Degree': ['Тусгай', 'Бүрэн бус дунд', 'Дунд', 'Бүрэн дунд', 'Бакалавр', 'Магистр', 'Доктор'],
+      'GraduatedYear': 1900
+    }
+    "
+    editing="{{editing}}"></x-table>
+
+  <x-file label="Дипломын хуулбар"
+          context="{{data.context}}"
+          value="{{data.current['DiplomaAttachment']}}"
+          editing="{{editing}}"></x-file>
+
+  <x-table label="Ур чадвар" id="skill"
+    rs="{{ data.current['Skills'] }}"
+    columns="
+    {
+      'Skill': 'Ур чадвар',
+      'SkillType': ['хэл', 'спорт', 'урлаг', 'бусад'],
+      'Level': 'сайн',
+      'Duration': 1,
+      'Notes': ''
+    }
+    "
+    editing="{{editing}}"></x-table>
+
+  <x-table label="Шагнал" id="reward"
+    rs="{{ data.current['Rewards'] }}"
+    columns="{
+        'Date': 'Огноо',
+        'Name': 'Шагналын нэр',
+        'Type': 'Шагналын төрөл'
+        }"
+    editing="{{editing}}"></x-table>
+
+</template>
+
+</dom-module>
+
+
+<dom-module id="applicant-kanban" extends="x-kanban">
+<template>
+
+  <shadow select="header"></shadow>
+
+  <template repeat="{{ r in data.rs}}">
+    <small><strong>{{r['Name']}} {{r['LastName']}}</strong></small>
+    <br/>
+  </template>
+
+  <shadow select="footer"></shadow>
+</template>
+
+</dom-module>
+
+<dom-module id="applicant-chart">
+    <p id="text"></p>
+</dom-module>
+
+<script type="application/dart" src="anket.dart"></script>

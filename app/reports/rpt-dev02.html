@@ -1,0 +1,72 @@
+<meta charset="utf-8">
+<link rel="import" href="../polymer/polymer.html">
+
+<dom-module id="rpt-dev02" attributes="rs">
+<template>
+  
+  <header>
+    <h2>Employee Events</h2>
+  </header>
+
+  <section>
+
+    <table class="table" name="Employee Events">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Event Title</th>
+        <th>Number of Participants</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <!-- TODO: group by Company -->
+      <tr template repeat="{{ r in rs }}">
+        <td>{{ r['Date'] }}</td>
+        <td>{{ r['Event'] }}</td>
+        <td>{{ r['Participants'] }}</td>
+      </tr>
+    </tbody>
+    </table>
+
+  </section>
+
+  <script type="text/javascript" defer>
+    function rpt_dev02(params) {
+      db.rpt_dev02.drop();
+
+	  var q = {};
+
+      if (params.Company) {
+        q["Company"] = params.Company;
+      }
+
+      if (params.Month) {
+        q["DateStart"] = {'$gt': params.Month,  '$lte': params.Month + '-31' };
+      }
+
+      db.Event.find(q).forEach( function(s) {
+        var o = {};
+        o.Event = s.Name;
+        o.Date = s.DateStart;
+        if (s.Participants) {
+          o.Participants = s.Participants.length;
+        } else {
+          o.Participants = 0;
+        }
+
+        db.rpt_dev02.save(o);
+      });
+
+      return "OK";
+    }
+  </script>
+
+  <footer>
+  </footer>
+</template>
+
+<script>
+  Polymer('rpt-dev02', {  rs: []  });
+</script>
+</dom-module>

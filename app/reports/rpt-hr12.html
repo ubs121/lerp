@@ -1,0 +1,99 @@
+<meta charset="utf-8">
+<link rel="import" href="../polymer/polymer.html">
+
+<dom-module id="rpt-hr12" attributes="rs">
+<template>
+
+  <header>
+    <h2>Амралт, чөлөө (жилээр)</h2>
+  </header>
+
+  <section>
+
+    <table class="table" name="Annual Leave Summary">
+    <thead>
+      <tr>
+        <th>Нэгж</th>
+        <th>Нэр</th>
+        <th>Ажилд орсон</th>
+        <th>Entitlement (Days)</th>
+        <th>Earned to Date</th>
+        <th>Taken to Date</th>
+        <th>Balance</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <!-- TODO: Balance формула асуух: Entitlement, Earned, Taken, -->
+      <tr template repeat="{{ r in rs }}">
+        <td>{{ r['Department'] }}</td>
+        <td>{{ r['Employee']['Name'] }}</td>
+        <td>{{ r['DateHired'] }}</td>
+        <td>{{ r['Entitlement'] }}</td>
+        <td>{{ r['Earned'] }}</td>
+        <td>{{ r['Taken'] }}</td>
+        <td>{{ r['Entitlement'] - r['Taken'] }}</td>
+      </tr>
+
+      <tr>
+        <td></td>
+        <td></td>
+        <td colspan="2">Grand Total</td>
+
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </tbody>
+    </table>
+
+  </section>
+
+  <script type="text/javascript" defer>
+    function rpt_hr12(params) {
+      db.rpt_hr12.drop();
+
+      var today = new Date();
+      var y = today.getFullYear();
+
+      var q = {};
+      if (params.Company) {
+        q["Company"] = params.Company;
+      }
+
+      q["DateFrom"] = {'$gt': ''+y, '$lte': y+'-12-31' };
+
+      var rs = db.Leave.group({
+        'key': {'Employee':1},
+        'cond': q,
+        'reduce': function(c,r) {
+          r.Earned += 1;
+          if (c.State=='зөвшөөрсөн' || c.State=='зөвшөөрсөн1') {
+            r.Taken += 1;
+          }
+        },
+        'initial': {
+          'Entitlement': 0,
+          'Earned': 0,
+          'Taken': 0
+        }
+      });
+
+      if (rs.length > 0) {
+      	db.rpt_hr12.insert(rs);
+
+      	// TODO: update Dept & HiredDate
+      }
+
+
+      return "OK";
+    }
+  </script>
+
+  <footer>
+  </footer>
+</template>
+<script>
+  Polymer('rpt-hr12', {  rs: []  });
+</script>
+</dom-module>

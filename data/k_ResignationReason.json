@@ -1,0 +1,9 @@
+[
+{ "_id": "VOLUNTARY", "Name": "Өөрийн хүсэлтээр гарсан" }, 
+{ "_id": "DISMISSAL", "Name": "Халагдсан" },
+{ "_id": "TERMINATION", "Name": "Гэрээ цуцалсан" }, 
+{ "_id": "CONTRACT_END", "Name": "Гэрээний хугацаа дууссан" },
+{ "_id": "RETRENCHMENT", "Name": "Цомхотгол" },
+{ "_id": "RETIRED", "Name": "Тэтгэвэрт гарсан" },
+{ "_id": "DECEASED", "Name": "Нас барсан" }
+]

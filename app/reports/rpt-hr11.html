@@ -1,0 +1,78 @@
+<meta charset="utf-8">
+<link rel="import" href="../polymer/polymer.html">
+<dom-module id="rpt-hr11" attributes="rs">
+<template>
+
+  <header>
+    <h2>Ажилтны хөдөлгөөн</h2>
+  </header>
+
+  <section>
+
+    <table class="table" name="Employee Movements">
+    <thead>
+      <tr>
+        <th>Нэгж</th>
+        <th>Нэр</th>
+        <th>Албан тушаал/Цалин</th>
+        <th>Хуучин албан тушаад/Цалин</th>
+        <th>Огноо</th>
+        <th>Шалтгаан</th>
+      </tr>
+    </thead>
+    <tbody template repeat="{{ r in rs }}">
+
+    <!-- TODO: group by Company -->
+      <tr>
+        <td>{{ r['Department'] }}</td>
+        <td>{{ r['Name'] }}</td>
+        <td>{{ r['CurrentPosition'] }}</td>
+        <td>{{ r['NewPosition'] }}</td>
+        <td>{{ r['EffectiveDate'] }}</td>
+        <td>{{ r['Reason'] }}</td>
+      </tr>
+    </tbody>
+    </table>
+
+  </section>
+
+  <script type="text/javascript" defer>
+    function rpt_hr11(params) {
+      db.rpt_hr11.drop();
+
+	  var q = {};
+
+      if (params.Company) {
+        q["Company"] = params.Company;
+      }
+
+      if (params.Month) {
+        q["Date"] = {'$gt': params.Month, '$lt': params.Month+'-32' };
+      }
+
+      db.Contract.find(q).forEach( function(s) {
+        var o = {};
+        o.Department = s.Dept||"";
+        o.Name = s.Employee.Name||s.Employee;
+        if (s.Wage) {
+        	o.NewPosition = s.Job + ' / ' + s.Wage || "";
+        } else {
+          o.NewPosition = s.Job || "";
+        }
+        o.EffectiveDate = "";
+        o.Reason = s.Reason || "";
+
+        db.rpt_hr11.save(o);
+      });
+
+      return "OK";
+    }
+  </script>
+
+  <footer>
+  </footer>
+</template>
+<script>
+  Polymer('rpt-hr11', {  rs: []  });
+</script>
+</dom-module>

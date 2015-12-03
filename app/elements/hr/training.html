@@ -1,0 +1,39 @@
+<meta charset="utf-8">
+<link rel="import" href="../polymer/polymer.html">
+
+<dom-module id="training-form">
+<template>
+
+  <record-set id="rsEmp" name="Employee"
+    project="['_id', 'Name', 'LastName', 'Job', 'Position', 'Dept']"
+    filter="{'Status': {'$ne':'гарсан'} }"
+    sort="['Name']"
+    limit=0
+    auto>
+  </record-set>
+
+  <x-select label="Ажилтан" value="{{data.current['Employee']}}" type="Map"
+      options="{{ $['rsEmp'].rs }}"
+      editing="{{editing}}"
+      required></x-select>
+
+  <x-input label="Хамрагдсан сургалт" value="{{data.current['Name']}}" editing="{{editing}}"></x-input>
+  <x-input label="Огноо" value="{{data.current['Date']}}" type="date" editing="{{editing}}"></x-input>
+  <x-input label="Хугацаа" value="{{data.current['Duration']}}" editing="{{editing}}"></x-input>
+
+
+
+  <x-note label="Тэмдэглэл" value="{{data.current['Notes']}}" editing="{{editing}}"></x-note>
+
+</template>
+
+<script>
+"use strict";
+class  TrainingForm {
+  beforeRegister() {
+    this.is = "training-form";
+  }
+}
+Polymer(TrainingForm);
+</script>
+</dom-module>

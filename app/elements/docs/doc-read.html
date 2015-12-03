@@ -1,0 +1,109 @@
+<meta charset="utf-8">
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/core_elements/core_list_dart.html">
+
+<!-- ном унших дэлгэц -->
+<dom-module id="book-read">
+<template>
+
+
+
+<div layout horizontal>
+
+<!--navigation -->
+<div style="width: 300px">
+
+</div>
+
+<div flex id="content">
+
+  <h3>{{book['нэр']}} - {{book['зохиогч']}}</h3>
+
+  <ul>
+      <template repeat="{{p in pages}}">
+      <li>
+        <a _href="{{ pageUrl(p['файл']) }}" target="_blank" title="{{selBook['нэр']}}">{{p['нэр']}}</a>
+      </li>
+      </template>
+  </ul>
+
+
+</div>
+
+</div>
+
+
+
+
+</template>
+
+<script>
+/**
+ * ном унших дэлгэц
+ *
+ * TODO: HTML to Markdown converter
+ */
+@CustomTag("book-read")
+class BookRead extends PolymerElement {
+  @published
+  UserContext context;
+
+  @published
+  String bookId;
+
+  @published
+  String hash = "";
+
+  @observable
+  Map book;
+
+  @observable
+  List pages;
+
+  BookRead.created() : super.created() {
+    if (hash == "") {
+      hash = window.location.hash;
+    }
+  }
+
+  hashChanged() {
+    bookId = Uri.decodeFull(hash.substring("#/read/".length));
+  }
+
+  bookIdChanged() {
+    getBookInfo();
+  }
+
+  getBookInfo() {
+    if (context == null) {
+      return;
+    }
+
+    context.send("db.findOne", ["Ном", {
+        "_id": bookId
+      }]).then((resp) {
+      book = toObservable( firstNonNull(resp, {}));
+
+      // хуудсуудыг тохируулах
+      pages = toObservable( firstNonNull(book['индекс'], []) );
+    }).catchError((e) {
+
+    });
+  }
+
+
+  String pageUrl(String path) {
+    return context.bookUrl("${book['хавтас']}/${path}");
+  }
+
+  String fileType(String file) {
+    if (file.endsWith(".mp3")) {
+      return "audio/mpeg";
+    }
+
+  }
+}
+</script>
+
+</dom-module>

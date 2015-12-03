@@ -1,0 +1,23 @@
+name: lerp
+version: 1
+table:
+  Doc:
+    id: string
+  	name: string # файлын нэр
+    image: string # зураг
+    author: string # зохиогч
+    date : datetime # үүсгэсэн, нийтэлсэн огноо
+    lang: string # хэл
+    version: string # хувилбар
+    category: string # ангилал
+    location: string # байрлал
+  	type: string # агуулгын төрөл
+    format: string # 'markdown','pdf','html','epub','audio','image','mobi'
+  	notes: string # тэмдэглэл
+  	downloadable: false # татаж болох эсэх
+  	isFolder: boolean # өөрөө хавтас эсэх
+    pageCount: integer # хуудасны тоо
+    notes: string # баримтын тухай тэмдэглэл
+  	user: string # эзэмшигч
+  	tags: string # түлхүүр үгс
+    rating: integer  # үнэлгээ

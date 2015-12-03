@@ -1,0 +1,46 @@
+[
+ {
+  "_id": "public",
+  "Name": "Компанийн мэдээ",
+  "Description":"Компанийн мэдээ, мэдээлэл",
+  "Image": "group.jpg",
+  "Subscription": false,
+  "Followers": ["ubs121"]
+ },
+ {
+  "_id": "kaizen",
+  "Name": "Кайзен",
+  "Description":"Шинийг санаачлагчидын бүлгэм",
+  "Image": "group.jpg",
+  "Subscription": false,
+  "Company":"Holding",
+  "Followers": ["ubs121"]
+ },
+ {
+  "_id": "hr",
+  "Name": "Хүний нөөц",
+  "Description":"Хүний нөөцийн булан",
+  "Image": "group.jpg",
+  "Company":"Holding",
+  "Subscription": true,
+  "Followers": [ "ubs121"]
+ },
+ {
+  "_id": "it",
+  "Name": "IT",
+  "Description":"Мэдээллийн Технологи",
+  "Image":"group.jpg",
+  "Company":"Holding",
+  "Subscription": true,
+  "Followers":[ "ubs121" ]
+ },
+ {
+  "_id":"entertainment",
+  "Name":"Чөлөөт бүлэг",
+  "Description":"Энтертэйнмэнт",
+  "Image":"group.jpg",
+  "Subscription": true,
+  "Company":"Holding",
+  "Followers":[]
+ }
+]

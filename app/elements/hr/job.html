@@ -1,0 +1,51 @@
+<meta charset="utf-8">
+<link rel="import" href="../polymer/polymer.html">
+
+<dom-module id="job-form">
+<template>
+
+  <record-set id="rsCompany" name="Company"  auto
+      context="{{data.context}}"
+      project="['_id', 'Name']">
+  </record-set>
+
+  <form class="form-horizontal" role="form">
+    <x-input label="Код" value="{{data.current['_id']}}" editing="{{editing}}"></x-input>
+    <x-input label="Бүтэн нэр" value="{{data.current['Name']}}" editing="{{editing}}"></x-input>
+    <x-input label="Байвал зохих орон тоо" value="{{data.current['ExpectedEmployees']}}" editing="{{editing}}"></x-input>
+    <x-input label="Чиг үүрэг" value="{{data.current['Description']}}" editing="{{editing}}"></x-input>
+    <x-input label="Тавигдах шаардлага" value="{{data.current['Requirements']}}" editing="{{editing}}"></x-input>
+    <x-input label="Түвшин" value="{{data.current['Level']}}" editing="{{editing}}"></x-input>
+
+    <x-select label="Компани"
+        value="{{data.current['Company']}}"
+        options="{{ $['rsCompany'].rs }}"
+        editing="{{editing}}">
+    </x-select>
+
+    <!--
+    <x-input label="Нэгж" value="{{data.current['Dept']}}" editing="{{editing}}"></x-input>
+
+    <x-input label="Хэнд тайлагнах" value="{{data.current['ReportTo']}}" editing="{{editing}}"></x-input>
+    -->
+    <x-check label="Идэвхитэй" value="{{data.current['Active']}}" editing="{{editing}}"></x-check>
+
+    <hr/>
+
+    <x-file label="Хавсралт"
+        context="{{data.context}}"
+        value="{{data.current['Attachment']}}"
+        editing="{{editing}}"></x-file>
+  </form>
+</template>
+
+
+<script>
+class JobForm {
+  beforeRegister() {
+    this.is = "job-form";
+  }
+}
+Polymer(JobForm);
+</script>
+</dom-module>

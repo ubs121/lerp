@@ -1,0 +1,55 @@
+<meta charset="utf-8">
+
+<link rel="import" href="../lerp/core.html">
+<link rel="import" href="company.html">
+<link rel="import" href="user-form.html">
+
+<dom-module id="user-settings">
+  <template>
+
+    <record-set id="rsCompany" name="Company" context="{{context}}"
+      project="['_id', 'Name', 'Description']">
+    </record-set>
+
+    <record-set id="rsUser" name="User" context="{{context}}"
+      project="['_id', 'Name', 'Email', 'Description', 'Company']">
+    </record-set>
+
+    <!-- left panel -->
+    <nav class="col-md-2 lerp-menu" placeholder="container">
+      <ul class="nav nav-pills nav-stacked" role="navigation">
+        <li class="{{ {'active': page=='#/user'} }}">
+          <a href="#/user" on-click="{{route}}">Хэрэглэгч</a>
+        </li>
+        <li class="{{ {'active': page=='#/company'} }}">
+          <a href="#/company" on-click="{{route}}">Компаниуд</a>
+        </li>
+      </ul>
+    </nav>
+
+    <section class="col-md-10" id="container">
+
+      <template if="{{page=='#/user'}}">
+        <view-mgr model='User'
+              form='user-form'
+              list='x-list'
+              currentView='list'
+              data="{{ $['rsUser'] }}">
+        </view-mgr>
+      </template>
+
+      <template if="{{page=='#/company'}}">
+        <view-mgr  model='Company'
+              form='company-form'
+              list='x-list'
+              currentView='list'
+              data="{{ $['rsCompany'] }}">
+        </view-mgr>
+      </template>
+
+    </section>
+
+  </template>
+
+  <script type="application/dart" src="settings.dart"></script>
+</dom-module>

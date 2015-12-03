@@ -1,0 +1,82 @@
+<meta charset="utf-8">
+<link rel="import" href="../polymer/polymer.html">
+
+<dom-module id="rpt-hr03" attributes="rs">
+<template>
+
+  <header>
+    <h2>Нөөц бүрдүүлэлт</h2>
+  </header>
+
+  <section>
+
+    <table class="table" name="Recruitment">
+    <thead>
+      <tr>
+        <th>Ажлын байр</th>
+        <th>Горилогч</th>
+        <th>Ярилсан/Уулзсан</th>
+        <th>Ажилд авсан</th>
+      </tr>
+    </thead>
+    <tbody template repeat="{{ r in rs }}">
+
+      <tr>
+        <td>{{ r['Job'] }}</td>
+        <td>{{ r['NoApplicants'] }}</td>
+        <td>{{ r['NoInterviewed'] }}</td>
+        <td>{{ r['NoHired'] }}</td>
+      </tr>
+    </tbody>
+    </table>
+
+  </section>
+
+  <script type="text/javascript" defer>
+    function rpt_hr03(params) {
+      db.rpt_hr03.drop();
+
+      var q = {};
+
+      if (params.Company) {
+        q["Company"] = params.Company;
+      }
+
+      if (params.Month) {
+        q["Date"] = {'$gt': params.Month, '$lt': params.Month+'-32' };
+      }
+
+      var rs = db.Applicant.group({
+        'key': {'Job':1},
+        'cond': q,
+        'reduce': function(c,r) {
+          	r.NoApplicants += 1;
+          	if (c.State=='open') {
+          		r.NoInterviewed += 1;
+          	}
+          	if (c.State=='hired') {
+          	  r.NoHired += 1;
+          	}
+         },
+         'initial': {'NoApplicants': 0, 'NoInterviewed': 0, 'NoHired': 0}
+      });
+
+      if (rs.length > 0) {
+      	db.rpt_hr03.insert(rs);
+      }
+
+      return "OK";
+    }
+
+
+  </script>
+
+  <footer>
+  </footer>
+</template>
+
+<script>
+  Polymer('rpt-hr03', {  rs: []  });
+</script>
+
+</dom-module>

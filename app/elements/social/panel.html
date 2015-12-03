@@ -1,0 +1,235 @@
+<meta charset="utf-8">
+
+<link rel="import" href="post.html">
+<link rel="import" href="group.html">
+<link rel="import" href="survey.html">
+<link rel="import" href="event.html">
+
+<dom-module id="plus-panel">
+<template>
+  <style>
+    .post-stream {
+    }
+    .plus-box {
+      display: inline-block;
+      vertical-align: top;
+      width: 100%;
+      margin: 5px;
+    }
+
+    .post-column {
+      width: 48%;
+      float: left;
+      margin: 5px;
+    }
+
+    .normalBox {
+      float: left;
+      margin-left: 40px;
+      width: 50%;
+      transition: width .4s ease, margin .4s ease, height .4s ease;
+    }
+
+    .centeredBox {
+      float: left;
+      width: 60%;
+      margin-left: 20%;
+      margin-right: 20%;
+      padding: 10px;
+      border: 1px solid silver;
+      box-shadow: 5px 5px 1px #888;
+      transition: width .4s ease, margin .4s ease, height .4s ease;
+    }
+
+    .badge {
+      position: absolute;
+      right: 5px;
+    }
+  </style>
+
+  <!-- өгөгдөл -->
+  <record-set id="rsGroup" name="PlusGroup" auto context="{{context}}"
+      project="['Name', 'Image', 'Followers', 'Description', 'Company']"
+      defaults="{ 'Image': 'group.jpg' }"
+      on-load="{{groupLoaded}}">
+  </record-set>
+
+  <record-set id="rsPost" name="Post" context="{{context}}"
+      project="['_id', 'Name', 'Type', 'Size', 'Date', 'Likes', 'Comments', 'To', 'Text', 'Commentable', 'Attachment', 'User', 'Event', 'Survey']"
+      sort="['Date']"
+      defaults="{ 'Commentable': true}">
+  </record-set>
+
+  <record-set id="rsEvent" name="Event" auto context="{{context}}"
+      project="['Name', 'Type', 'MainSpeaker', 'DateStart', 'DateEnd', 'State']">
+  </record-set>
+
+  <record-set id="rsSurvey" name="Survey" auto context="{{context}}"
+      project="['Name', 'Type', 'DateOpen', 'DateClose', 'State']">
+  </record-set>
+
+  <div>
+   <iframe style="width: 100%; height: 100px" _src="{{context.fileServer}}/Banner/index.html" scrolling="no" frameborder="0">
+   </iframe>
+  </div>
+
+  <!-- left menu tree -->
+  <nav class="col-md-2 lerp-menu">
+    <!-- no title -->
+    <ul class="nav nav-pills nav-stacked" role="navigation">
+      <li class="{{ {'active': page=='#/all'} }}">
+        <a href="#/all" on-click="{{route}}">
+          Бүгд<span class="badge pull-right">{{postCounts['all']}}</span>
+        </a>
+      </li>
+      <li class="{{ {'active': page=='#/news'} }}">
+        <a href="#/news" on-click="{{route}}">
+          Мэдээ
+          <span class="badge pull-right">{{postCounts['news']}}</span>
+        </a>
+      </li>
+      <li class="{{ {'active': page=='#/greeting'} }}">
+        <a href="#/greeting" on-click="{{route}}">
+          Мэндчилгээ
+          <span class="badge pull-right">{{postCounts['greeting']}}</span>
+        </a>
+      </li>
+      <li class="{{ {'active': page=='#/idea'} }}">
+        <a href="#/idea" on-click="{{route}}">
+          Шинэ санаа
+          <span class="badge pull-right">{{postCounts['idea']}}</span>
+        </a>
+      </li>
+      <li class="{{ {'active': page=='#/event'} }}">
+        <a href="#/event" on-click="{{route}}">
+          Үйл явдал
+          <span class="badge pull-right">{{postCounts['event']}}</span>
+        </a>
+      </li>
+
+      <li class="{{ {'active': page=='#/survey'} }}">
+        <a href="#/survey" on-click="{{route}}">
+          Асуулга
+          <span class="badge pull-right">{{postCounts['survey']}}</span>
+        </a>
+      </li>
+
+    </ul>
+
+    <h2>Бусад</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li class="{{ {'active': page=='#/group'} }}">
+        <a href="#/group" on-click="{{route}}">Группт элсэх</a></li>
+
+      <li class="{{ {'active': page=='#/eventEdit'} }}">
+        <a href="#/eventEdit" on-click="{{route}}">
+          Үйл явдал засах
+        </a>
+      </li>
+
+      <li class="{{ {'active': page=='#/surveyEdit'} }}">
+        <a href="#/surveyEdit" on-click="{{route}}">
+          Санал асуулга засах
+        </a>
+      </li>
+
+    </ul>
+
+    <div style="padding-top: 30px">
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <img style="width: 100%" _src="{{context.serverUrl}}/file/birthday.gif" />
+      </div>
+    </div>
+
+  </nav>
+
+
+
+
+
+  <!-- posts -->
+  <div id="post-panel" class="col-md-10">
+
+    <div class="row">
+
+
+      <!-- шинэ нийтлэл нэмэх цонх -->
+      <div id="newPostHost" class="normalBox"
+          on-cancelpost="{{cancelNewPost}}"
+          on-savepost="{{afterNewPost}}"
+          on-click="{{focusNewPost}}">
+
+        <plus-post id="newPost" post="{{newPost}}" top="true"
+          groupData="{{ $['rsGroup'] }}"
+          surveyData="{{ $['rsSurvey']  }}"
+          eventData="{{ $['rsEvent'] }}">
+        </plus-post>
+      </div>
+
+
+    </div>
+
+    <template if="{{ posts.page > 0 }}">
+      <div on-click="{{ showLess }}" class="col-md-12 btn btn-default">
+          өмнөх...
+      </div>
+    </template>
+
+    <!-- нийтлэлүүд байрлах хэсэг -->
+    <div id="post-stream">
+
+    </div>
+
+    <template if="{{ posts.rs.length > 0 && posts.total > posts.limit }}">
+      <div on-click="{{ showMore }}" class="col-md-12 btn btn-default"
+        style="margin-bottom: 20px;">
+          дараах...
+      </div>
+    </template>
+
+    <template if="{{ posts.rs.length == 0}}">
+      <p>Өгөгдөл байхгүй!</p>
+    </template>
+
+  </div>
+
+  <!-- контент сэлгэх зай -->
+  <div class="col-md-10">
+     <template if="{{page=='#/group'}}">
+       <view-mgr model='PlusGroup'
+          currentView='kanban'
+          form='group-form'
+          kanban='plus-group'
+          list='x-list'
+          data="{{ $['rsGroup'] }}" >
+       </view-mgr>
+    </template>
+
+    <template if="{{page=='#/surveyEdit'}}">
+       <view-mgr model='Survey'
+          currentView='list'
+          form='survey-form'
+          list='x-list'
+          data="{{ $['rsSurvey'] }}" >
+       </view-mgr>
+    </template>
+
+     <template if="{{page=='#/eventEdit'}}">
+       <view-mgr model='Survey'
+          currentView='list'
+          form='event-form'
+          list='x-list'
+          data="{{ $['rsEvent'] }}" >
+       </view-mgr>
+    </template>
+  </div>
+
+
+
+</template>
+
+<script type="application/dart" src="panel.dart"></script>
+</dom-module>

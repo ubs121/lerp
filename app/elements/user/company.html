@@ -1,0 +1,26 @@
+<meta charset="utf-8">
+<link rel="import" href="../polymer/polymer.html">
+
+<dom-module id="company-form">
+<template>
+
+<form class="form-horizontal" role="form">
+  <x-input label="Товч нэр" value="{{data.current['_id']}}" editing="{{editing}}"></x-input>
+  <x-input label="Бүтэн нэр" value="{{data.current['Name']}}" editing="{{editing}}"></x-input>
+  <x-input label="Тайлбар" value="{{data.current['Description']}}" editing="{{editing}}"></x-input>
+  <x-input label="Лого" type="file" value="{{data.current['Logo']}}" editing="{{editing}}"></x-input>
+</form>
+
+</template>
+
+<script>
+"use strict";
+
+class CompanyForm {
+  beforeRegister() {
+
+  }
+}
+Polymer(CompanyForm);
+</script>
+</dom-module>

@@ -1,0 +1,29 @@
+#!/bin/sh
+###
+# chkconfig: 235 99 26
+# description: Manages Light ERP Service
+###
+LERP_HOME=/home/lerp
+
+case "$1" in
+    start)
+        echo  "Starting lerpd"
+        export GOMAXPROCS=4
+        start-stop-daemon --background --start \
+            --chdir $LERP_HOME \
+            --exec $LERP_HOME/lerp \
+            --make-pidfile --pidfile $LERP_HOME/lerp.pid
+               
+        ;;
+    stop)
+        echo  "Stopping lerpd"
+        start-stop-daemon --stop \
+            --exec $LERP_HOME/lerp \
+            --pidfile $LERP_HOME/lerp.pid --retry 5
+        ;;
+    *)
+        echo "Usage: /etc/init.d/lerpd start|stop"
+        exit 1
+        ;;
+esac
+

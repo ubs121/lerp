@@ -1,0 +1,71 @@
+<meta charset="utf-8">
+<link rel="import" href="../polymer/polymer.html">
+
+<dom-module id="rpt-dev01" attributes="rs">
+<template>
+
+  <header>
+    <h2>Learning &amp; Development</h2>
+  </header>
+
+  <section>
+
+    <table class="table" name="Learning Development">
+    <thead>
+      <tr>
+        <th>Program Title</th>
+        <th>Date</th>
+        <th>Duration (hours)</th>
+        <th>Number of Participants</th>
+        <th>Total Hours</th>
+        <th>Trainer</th>
+      </tr>
+    </thead>
+    <tbody >
+      <!-- TODO: group by Company -->
+      <tr template repeat="{{ r in rs }}">
+        <td>{{ r['Event'] }}</td>
+        <td>{{ r['Date'] }}</td>
+        <td>{{ r['Duration'] }}</td>
+        <td>{{ r['Participants'] }}</td>
+        <td>{{ r['TotalHours'] }}</td>
+        <td>{{ r['Trainer'] }}</td>
+      </tr>
+    </tbody>
+    </table>
+
+  </section>
+
+  <script type="text/javascript" defer>
+    function rpt_dev01(params) {
+      db.rpt_dev01.drop();
+
+      db.Event.find({'Type':'training'}).forEach( function(s) {
+        var o = {};
+        o.Event = s.Name;
+        o.Date = s.DateStart;
+        o.Duration = s.Duration || 1;
+        if (s.Participants) {
+        	o.Participants = s.Participants.length;
+        } else {
+          o.Participants = 0;
+        }
+        o.TotalHours = o.Participants * o.Duration;
+        o.Trainer = s.MainSpeaker||s.User;
+
+        db.rpt_dev01.save(o);
+      });
+
+      return "OK";
+    }
+  </script>
+
+  <footer>
+  </footer>
+</template>
+
+<script>
+  Polymer('rpt-dev01', {  rs: []  });
+</script>
+
+</dom-module>

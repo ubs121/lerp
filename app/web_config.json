@@ -1,0 +1,9 @@
+{
+  "serverUrl": "http://localhost",
+  "WEB_ROOT": "http://localhost/web",
+  "RPC_SERVER": "http://localhost/rpc",
+  "FILE_SERVER": "http://localhost/file",
+  
+  "serverUrl1": "http://192.168.1.100",
+  "serverUrl2": "http://202.131.231.165"
+}

@@ -1,0 +1,16 @@
+[
+    {
+        "_id": "ubs121",
+        "Name": "Ууганбаяр",
+        "LastName": "Сүхбаатар",
+        "User": "ubs121",
+        "Dept": "Holding/OD&HC",
+        "Job": "Holding/IT",
+        "Gender": "эр",
+        "Company": "Holding",
+        "MobilePhone": "88005401",
+        "JoinedDate": "2013-09-23",
+        "Status": "available",
+        "CardNo": 100121
+    }
+]

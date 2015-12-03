@@ -1,0 +1,78 @@
+<meta charset="utf-8">
+<link rel="import" href="packages/polymer/polymer.html">
+<dom-module id="rpt-hr13" attributes="rs">
+<template>
+  <link rel="stylesheet" href="packages/bootstrap_for_pub/css/bootstrap.min.css">
+
+  <header>
+    <h2>Гарсан ажилтан</h2>
+  </header>
+  
+  <section>
+    
+    <table class="table" name="Resignation report">
+    <thead>
+      <tr>
+        <th>S/No</th>
+        <th>Department</th>
+        <th>Name/EN</th>
+        <th>Job Title</th>
+        <th>Last Date of service</th>
+        <th>Date of Resignation</th>
+        <th>Reason</th>
+      </tr>
+    </thead>
+    <tbody template repeat="{{ r in rs }}">
+      <tr>
+        <td>{{ r['SNo'] }}</td>
+        <td>{{ r['Department'] }}</td>
+        <td>{{ r['Name'] }}</td>
+        <td>{{ r['Job'] }}</td>
+        <td>{{ r['LastServiceDate'] }}</td>
+        <td>{{ r['ResignationDate'] }}</td>
+        <td>{{ r['ResignationReason'] }}</td>
+      </tr>
+    </tbody>
+    </table>
+    
+  </section>
+  
+  <script type="text/javascript" defer>
+    function rpt_hr13(params) {
+      db.rpt_hr13.drop();
+      
+	  var q = {};
+      
+      if (params.Company) {
+        q["Company"] = params.Company; 
+      }
+      
+      if (params.Month) {
+        q["Date"] = {'$gt': params.Month, '$lt': params.Month+'-32' };
+      }
+      
+      // TODO: order by company
+      db.Employee.find(q).forEach( function(s) {
+        var o = {};
+        o.SNo = s._id;
+        o.Name = s.Name + " " + s.LastName;
+        o.Department = s.Dept || "";
+        o.Job = s.Job||"";
+        o.LastServiceDate = "";
+        o.ResignationDate = s.ResignationDate||"";
+        o.ResignationReason = s.ResignationReason||"";
+        
+        db.rpt_hr13.save(o); 
+      });
+      
+      return "OK";
+    }
+  </script>
+  
+  <footer>
+  </footer>
+</template>
+<script>
+  Polymer('rpt-hr13', {  rs: []  });
+</script>
+</dom-module>

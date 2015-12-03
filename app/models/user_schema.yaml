@@ -1,0 +1,10 @@
+name: lerp
+version: 1
+table:
+  User:
+    id: string # нэвтрэх нэр
+    password: string # нууц үг
+    name: string # Өөрийн нэр
+    description: string # тайлбар
+    role: string # дүр
+    company: string # Компанийн харъяалал

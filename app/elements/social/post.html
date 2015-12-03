@@ -1,0 +1,234 @@
+<meta charset="utf-8">
+<link rel="import" href="../polymer/polymer.html">
+
+<dom-module id="plus-post">
+<template>
+  
+  <style>
+    .like-photos {
+      display: inline-block;
+      max-width: 200px;
+    }
+    .like-photos img {
+      width: 28px;
+      height: 28px;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+     .btn-new {
+      float: left;
+      display: block;
+      width: 50px;
+      height: 30px;
+      text-align: center;
+      vertical-align: middle;
+      cursor: pointer;
+    }
+    .btn-new:hover {
+      background: #e7e7e7;
+    }
+  </style>
+
+  <!-- харах горимд -->
+  <template if="{{!editing}}">
+      <template if="{{!top}}">
+      <div class="panel panel-default">
+
+
+        <!-- header -->
+        <div class="panel-heading" style="display:-webkit-box;">
+
+          <div style="width: 60px;">
+            <a href="#" on-click="{{profile}}">
+              <img _src="{{ context.fileUrl(post['User']) }}" alt="зураггүй"
+                title="{{context.name}}"
+                class="img-rounded" style="height: 50px;">
+            </a>
+          </div>
+
+          <div style="-webkit-box-flex:1.0;">
+            <h3 style="font-size: 14pt;margin:0;"><a href="#/test">{{post['Name']}}</a></h3>
+            <p style="font-size: 10pt; margin-left: 15px;">{{post['Date']}}</p>
+          </div>
+
+          <template if="{{mouseOver && context.user==post['User']}}">
+            <div class="btn-group pull-right">
+                <button on-click="{{edit}}" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-pencil"></i></button>
+                <button on-click="{{delete}}" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-remove"></i></button>
+            </div>
+          </template>
+
+        </div>
+
+        <div class="panel-body">
+
+          <!-- text section -->
+          <article style="clear: left;">
+            <div>
+              {{post['Text']}}
+            </div>
+
+          </article>
+
+          <!-- attachment section -->
+          <template if="{{post['Attachment']}}">
+            <x-file value="{{ post['Attachment'] }}"
+              context="{{data.context}}"
+            ></x-file>
+          </template>
+
+
+          <template if="{{'event'==post['Type']}}">
+            <h3>{{ post['Event']['Name'] }}</h3>
+            <p><strong>Эхлэх</strong>: {{ post['Event']['DateStart'] }}</p>
+            <p><strong>Дуусах</strong>: {{ post['Event']['DateEnd'] }}</p>
+
+            <p>Та оролцох уу?</p>
+            <div class="btn-toolbar">
+              <button on-click="{{ eventSubscribe }}" data-msg="yes" class="btn btn-primary">Тийм</button>
+              <button on-click="{{ eventSubscribe }}" data-msg="no" class="btn btn-default">Үгүй</button>
+            </div>
+
+          </template>
+
+          <template if="{{'survey'==post['Type']}}">
+            <h3>{{ post['Survey']['Name'] }}</h3>
+
+            <div class="btn-toolbar">
+              <button on-click="{{ surveyFeedback }}"
+                data-msg="{{post['Survey']['_id']}}"
+                class="btn btn-primary">Хариулах</button>
+            </div>
+
+          </template>
+
+          <!-- like -->
+          <div style="margin-top: 20px;">
+            <a on-click="{{onPlus}}" class="btn btn-default btn-sm">
+             <template if="{{likes.length == 0}}">+1</template>
+              <template if="{{likes.length > 0}}">+{{likes.length}}</template>
+            </a>
+
+            <div class="like-photos pull-right">
+              <template repeat="{{ l in likes }}">
+                 <img _src="{{context.serverUrl}}/file/{{l['User']}}" title="{{l['User']}}">
+              </template>
+            </div>
+          </div>
+
+          <!-- comment -->
+          <template if="{{post['Commentable']}}">
+            <x-comment model="post" rs="{{comments}}" ctx="{{context}}" on-comment="{{onComment}}"></x-comment>
+          </template>
+
+        </div>
+      </div>
+    </template>
+
+    <!-- шинээр нэмэх дэлгэц -->
+    <template if="{{top}}">
+       <form>
+          <!-- мэдээний текст -->
+          <textarea class="form-control" placeholder="Шинэ мэдээлэл..."></textarea>
+
+          <!-- мэдээний төрөл -->
+          <div style="margin-top: 10px; color: #036">
+            <div class="btn-new" data-msg="news" on-click="{{edit}}" title="Мэдээ">
+              <div class="glyphicon glyphicon-pencil"></div>
+            </div>
+            <div class="btn-new" data-msg="greeting" on-click="{{edit}}" title="Мэндчилгээ">
+              <div class="glyphicon glyphicon-gift"></div>
+            </div>
+            <div class="btn-new" data-msg="idea" on-click="{{edit}}" title="Шинэ санаа">
+              <div class="glyphicon glyphicon-hand-up"></div>
+            </div>
+            <div class="btn-new" data-msg="event" on-click="{{edit}}" title="Үйл явдал">
+              <div class="glyphicon glyphicon-calendar"></div>
+            </div>
+            <div class="btn-new" data-msg="survey" on-click="{{edit}}" title="Санал асуулга">
+              <div class="glyphicon glyphicon-question-sign"></div>
+            </div>
+          </div>
+        </form>
+    </template>
+
+  </template>
+
+  <!-- засах горимд -->
+  <template if="{{editing}}">
+    <form class="col-md-12 form-horizontal" role="form">
+      <div class="form-group">
+        <textarea value="{{post['Text']}}" class="form-control" style="min-height: 120px;" autofocus>{{post['Text']}}</textarea>
+      </div>
+
+      <div class="form-group">
+        <!-- event бол  -->
+        <template if="{{'event'==post['Type']}}">
+          <x-select label="Үйл явдал" options="{{ eventData.rs }}" type="Map"
+            value="{{ post['Event'] }}"
+            editing="true">
+          </x-select>
+        </template>
+
+        <!-- survey бол  -->
+        <template if="{{'survey'==post['Type']}}">
+          <x-select label="Асуулга" options="{{ surveyData.rs }}" type="Map"
+            value="{{ post['Survey'] }}"
+            editing="true">
+          </x-select>
+        </template>
+      </div>
+
+      <table>
+        <tr>
+          <td><label for="to" class="col-sm-2">To:</label></td>
+          <td>
+            <select value="{{ post['To'] }}" id="to" class="col-sm-8 form-control">
+              <option template repeat="{{ g in groupData.rs }}" value="{{g['_id']}}">{{g['Name']}}</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="att" class="col-sm-2">Хавсралт (интернэт,файл):</label>
+          </td>
+          <td>
+            <input type="url" class="form-control"
+              value="{{post['Attachment']}}" id="att1"
+              placeholder="Интернэтээс хаяг заах">
+              <input type="file" on-change="{{attach}}"
+                class="form-control" id="att" accept="image/*">
+          </td>
+        </tr>
+        <tr>
+          <td><label for="size" class="col-sm-2">Хэмжээ</label></td>
+          <td>
+            <select id="size" value="{{post['Size']}}" class="col-sm-8 form-control">
+              <option></option>
+              <option>жижиг</option>
+              <option>том</option>
+            </select>
+        </td>
+        </tr>
+        <tr>
+          <td><label for="cmt" class="col-sm-2">Коммент зөвшөөрөх</label></td>
+          <td><input id="cmt" type="checkbox" checked="{{ post['Commentable'] }}" ></td>
+        </tr>
+      </table>
+
+      <div class="form-group">
+        <button class="btn btn-primary" on-click="{{save}}">
+          <template if="{{!post.containsKey('_id')}}">Нэмэх</template>
+          <template if="{{post.containsKey('_id')}}">Хадгалах</template>
+        </button>
+        <button class="btn btn-default" on-click="{{cancelEdit}}">Болих</button>
+      </div>
+    </form>
+  </template>
+
+
+</template>
+
+</dom-module>
+
+<script type="application/dart" src="post.dart"></script>
