@@ -4,10 +4,11 @@ import (
 	"flag"
 	"fmt"
 	"lerp/rpc"
-	"lerp/db"
 	"log"
 	"net/http"
 	"os"
+
+	db "github.com/ubs121/db/mongo"
 )
 
 func main() {
@@ -25,12 +26,12 @@ func main() {
 	// TODO: load config
 	log.Println(configFile)
 
-	cmd:=os.Args[1]
+	cmd := os.Args[1]
 
 	// connect to database
 	log.Println("db connect...")
 
-	db.Open("127.0.0.1")
+	db.Open("127.0.0.1", "lerp")
 	defer db.Close()
 
 	switch cmd {
@@ -58,9 +59,7 @@ func main() {
 
 		//http.Handle("/file", http.StripPrefix("/file", http.FileServer(http.Dir("file"))))
 
-
 		http.ListenAndServeTLS(":3000", "cert.pem", "key.pem", mux)
-
 
 	default:
 		fmt.Println("No command", cmd)
