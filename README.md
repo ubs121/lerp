@@ -18,6 +18,18 @@ Objective
 
 generate_cert --host localhost
 
+## Compiling
+
+```sh
+$ go build cmd/lerp.go
+```
+
+
+## Run (serve http)
+
+```sh
+$ ./lerp http
+```
 
 # Project structure
 
