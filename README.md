@@ -1,10 +1,10 @@
-lerp-server
+# lerp
 
-Generic Light ERP server with MongoDB back-end
+Lerp  (Light ERP) is a generic app server written in Go with MongoDB back-end.
 
 version: 0.0.1
 
-Objective
+## Objective
 
 * Go backed app server
 * Schema-less data, MongoDB storage
