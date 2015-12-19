@@ -8,8 +8,7 @@ version: 0.0.1
 
 * Go backed app server
 * Schema-less data, MongoDB storage
-* Generic web components using Polymer.js
-* Бүх төрлийн мэдээллийг хадгалах, хайх боломжтой байна
+* Front-end using Polymer.js
 
 
 # How to Run
@@ -32,8 +31,6 @@ $ ./lerp http
 ```
 
 # Project structure
-
-Хавтасын бүтэц нь дараах байдалтай харагдана.
 
 ```
 doc               Documentation, developer guide, user guide etc.
@@ -60,9 +57,6 @@ Google Chrome 40+, Mozilla Firefox
 * http://nicolewhite.github.io/
 * https://github.com/davidmeza1/doctopics
 * http://maurizzzio.github.io/greuler/
-
-
-# Roadmap
 
 * Граф өгөгдлийн сан дэмжинэ. Knowledge Graph based Database
 	* http://worrydream.com/refs/Bush%20-%20Memex%20Revisited.pdf
