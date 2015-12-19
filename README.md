@@ -39,9 +39,8 @@ doc               Documentation, developer guide, user guide etc.
 cmd               Executables, utils
 rpc               RPC services
 user              User module
-app 			  Web front-end using Polymer.js
+app 	 	  Web front-end using Polymer.js
 file              File, resource exchange module
-db                Data layer
 data              Demo data
 
 
