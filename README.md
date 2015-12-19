@@ -15,7 +15,9 @@ version: 0.0.1
 
 ## Generate self signed certificate
 
-generate_cert --host localhost
+```sh
+$ generate_cert --host localhost
+```
 
 ## Compiling
 
